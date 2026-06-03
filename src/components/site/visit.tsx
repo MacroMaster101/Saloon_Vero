@@ -49,7 +49,7 @@ export async function Visit() {
           </div>
         </div>
         <div className="map reveal">
-          <ImgSlot alt="Find us on the map" />
+          <ImgSlot src="/images/visit/map.png" alt="Find us on the map" />
           <svg className="map__pin" width="44" height="44" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7 11.5 7.3 11.8.4.3.9.3 1.3 0C13 21.5 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg>
         </div>
       </div>

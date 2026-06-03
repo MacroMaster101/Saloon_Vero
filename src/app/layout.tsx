@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { jakarta } from '@/lib/fonts';
+import { poppins } from '@/lib/fonts';
 import { ThemeScript } from '@/components/theme/theme-script';
 import './globals.css';
 
@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head><ThemeScript /></head>
-      <body className={jakarta.variable}>{children}</body>
+      <body className={poppins.variable}>{children}</body>
     </html>
   );
 }
