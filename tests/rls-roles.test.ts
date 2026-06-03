@@ -8,10 +8,12 @@ const admin = createAdminClient();
 const TAG = 'VS-RLS';
 
 async function makeUser(email: string) {
-  const { data } = await admin.auth.admin.createUser({ email, password: 'Passw0rd!23', email_confirm: true });
+  // Random per-run password — never a hardcoded literal (avoids committing a secret).
+  const password = `T${crypto.randomUUID()}!`;
+  const { data } = await admin.auth.admin.createUser({ email, password, email_confirm: true });
   const id = data.user!.id;
   const sb = createSb(url, anonKey);
-  await sb.auth.signInWithPassword({ email, password: 'Passw0rd!23' });
+  await sb.auth.signInWithPassword({ email, password });
   return { id, sb };
 }
 
