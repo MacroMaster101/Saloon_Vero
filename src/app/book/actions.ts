@@ -1,6 +1,7 @@
 'use server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getUser } from '@/lib/supabase/auth';
 import { computeOpenSlots, type Interval } from '@/lib/availability';
 import { toUtcInstant, minutesOfDayInTz } from '@/lib/time';
 import { createBookingSchema, type CreateBookingInput } from '@/lib/validators';
@@ -75,6 +76,7 @@ export async function createBooking(raw: CreateBookingInput): Promise<CreateResu
   const input = parsed.data;
 
   const admin = createAdminClient();
+  const sessionUser = await getUser();
   // Re-derive price + duration from DB (never trust client).
   const { data: service } = await admin.from('services').select('id,name,duration_min,price_lkr')
     .eq('id', input.serviceId).eq('is_active', true).single();
@@ -111,6 +113,7 @@ export async function createBooking(raw: CreateBookingInput): Promise<CreateResu
       customer_name: input.name, customer_phone: input.phone,
       customer_email: input.email || null, notes: input.notes,
       starts_at: startsAt, ends_at: endsAt, status: 'confirmed',
+      user_id: sessionUser?.id ?? null,
     });
     if (!error) {
       const whenLabel = new Intl.DateTimeFormat('en-LK', {
