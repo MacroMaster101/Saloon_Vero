@@ -72,3 +72,21 @@ export async function getBusinessHours() {
   const { data } = await sb.from('business_hours').select('*').order('day_of_week');
   return data && data.length > 0 ? data : FALLBACK_HOURS;
 }
+
+// Builds a PostgREST `.or()` filter string for a user's booking history:
+// their own (user_id) plus legacy guest bookings matching their verified email.
+export function historyOrFilter(userId: string, email: string | null): string {
+  const own = `user_id.eq.${userId}`;
+  if (!email) return own;
+  return `${own},and(user_id.is.null,customer_email.ilike.${email.toLowerCase()})`;
+}
+
+export async function getMyBookings(userId: string, email: string | null) {
+  const sb = await createClient();
+  const { data } = await sb
+    .from('bookings')
+    .select('reference, starts_at, ends_at, status, customer_name, service_id, stylist_id')
+    .or(historyOrFilter(userId, email))
+    .order('starts_at', { ascending: false });
+  return data ?? [];
+}
