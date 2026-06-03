@@ -41,6 +41,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Superpowers brainstorm companion
+.superpowers/
+
 # Supabase CLI scratch
 supabase/.temp/
 .supabase-*.url
