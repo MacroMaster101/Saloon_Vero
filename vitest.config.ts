@@ -12,7 +12,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, '.'),
+      '@': resolve(__dirname, 'src'),
       // `server-only` throws when imported outside an RSC. Stub it so the
       // service-role admin client can be exercised by the integration test.
       'server-only': resolve(__dirname, 'tests/stubs/server-only.ts'),

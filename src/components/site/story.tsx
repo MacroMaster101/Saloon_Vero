@@ -6,7 +6,7 @@ export function Story() {
       <div className="wrap story__grid">
         <div className="story__art reveal">
           <div className="pole"></div>
-          <ImgSlot alt="Salon interior" />
+          <ImgSlot src="/images/story/interior.png" alt="Salon interior" />
         </div>
         <div className="story__copy reveal">
           <span className="eyebrow gold">Our Story</span>

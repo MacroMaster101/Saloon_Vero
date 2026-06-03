@@ -24,19 +24,19 @@ insert into services (slug, name, description, category, price_lkr, duration_min
 on conflict (slug) do nothing;
 
 -- Stylists
-insert into stylists (slug, name, role, tags, sort_order) values
-  ('ruwan',    'Ruwan',    'Gents Stylist',    array['Cuts','Colour'],          1),
-  ('sanduni',  'Sanduni',  'Ladies Stylist',   array['Cut & style','Blow-dry'], 2),
-  ('tharindu', 'Tharindu', 'Barber',           array['Beard','Fades'],          3),
-  ('nadeesha', 'Nadeesha', 'Beauty Therapist', array['Facials','Bridal'],       4)
+insert into stylists (slug, name, role, tags, avatar_url, sort_order) values
+  ('ruwan',    'Ruwan',    'Gents Stylist',    array['Cuts','Colour'],          '/images/stylists/ruwan.png', 1),
+  ('sanduni',  'Sanduni',  'Ladies Stylist',   array['Cut & style','Blow-dry'], '/images/stylists/sanduni.png', 2),
+  ('tharindu', 'Tharindu', 'Barber',           array['Beard','Fades'],          '/images/stylists/tharindu.png', 3),
+  ('nadeesha', 'Nadeesha', 'Beauty Therapist', array['Facials','Bridal'],       '/images/stylists/nadeesha.png', 4)
 on conflict (slug) do nothing;
 
 -- Gallery (lookbook) — image_url filled by admin uploads later; placeholders for now
 insert into gallery (title, tag, category, image_url, sort_order) values
-  ('Ladies Colour',  'Colour',   'Balayage, roots & full shades', '', 1),
-  ('Gents Fade',     'Gents',    'Sharp, blended & clean',        '', 2),
-  ('Bridal Look',    'Bridal',   'Hair, make-up & dressing',      '', 3),
-  ('Hair Treatment', 'Hair Spa', 'Repair, smooth & shine',        '', 4),
-  ('Beard Grooming', 'Beard',    'Shaped, lined & oiled',         '', 5),
-  ('Facial & Glow',  'Beauty',   'Clean-ups & facials',           '', 6)
+  ('Ladies Colour',  'Colour',   'Balayage, roots & full shades', '/images/lookbook/ladies-colour.png', 1),
+  ('Gents Fade',     'Gents',    'Sharp, blended & clean',        '/images/lookbook/gents-fade.png', 2),
+  ('Bridal Look',    'Bridal',   'Hair, make-up & dressing',      '/images/lookbook/bridal-look.png', 3),
+  ('Hair Treatment', 'Hair Spa', 'Repair, smooth & shine',        '/images/lookbook/hair-spa.png', 4),
+  ('Beard Grooming', 'Beard',    'Shaped, lined & oiled',         '/images/lookbook/beard-grooming.png', 5),
+  ('Facial & Glow',  'Beauty',   'Clean-ups & facials',           '/images/lookbook/facial-glow.png', 6)
 on conflict do nothing;
