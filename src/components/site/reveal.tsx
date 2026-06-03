@@ -17,12 +17,11 @@ export function Reveal({
     if (!el) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       // Reduced motion / no-IO: reveal immediately so content is never hidden.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSeen(true);
+      Promise.resolve().then(() => setSeen(true));
       return;
     }
     if (!('IntersectionObserver' in window)) {
-      setSeen(true);
+      Promise.resolve().then(() => setSeen(true));
       return;
     }
     const io = new IntersectionObserver(

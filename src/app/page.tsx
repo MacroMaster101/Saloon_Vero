@@ -15,6 +15,7 @@ import { Visit } from '@/components/site/visit';
 import { Cta } from '@/components/site/cta';
 import { Footer } from '@/components/site/footer';
 import { BookingWizard } from '@/components/booking/booking-wizard';
+import { LoadingScreen } from '@/components/site/loading-screen';
 import { getGallery, getBookableServices, getStylists } from '@/lib/queries';
 
 export default async function Home() {
@@ -25,6 +26,7 @@ export default async function Home() {
   ]);
   return (
     <>
+      <LoadingScreen />
       <ScrollProgress />
       <LenisProvider />
       <RevealObserver />

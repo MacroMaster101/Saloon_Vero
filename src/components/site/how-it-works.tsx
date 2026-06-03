@@ -66,7 +66,7 @@ export function HowItWorks() {
             <div className="how__visual" id="howVisual">
               {VISUALS.map((v, i) => (
                 <div className={`vlayer${i === active ? ' on' : ''}`} data-i={i} key={v}>
-                  <ImgSlot src={null} alt={v} />
+                  <ImgSlot src={`/images/how/step-${i + 1}.png`} alt={v} />
                 </div>
               ))}
               <div className="how__counter" id="howNum">
