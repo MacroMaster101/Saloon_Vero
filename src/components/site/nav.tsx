@@ -1,5 +1,6 @@
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { MobileMenu } from '@/components/site/mobile-menu';
+import { NavAuth } from '@/components/site/nav-auth';
 
 export function Nav() {
   return (
@@ -19,6 +20,7 @@ export function Nav() {
           <a href="#visit">Find Us</a>
         </nav>
         <ThemeToggle />
+        <NavAuth />
         <a href="#book" className="btn btn--primary nav__cta">Book now</a>
         <MobileMenu />
       </div>
