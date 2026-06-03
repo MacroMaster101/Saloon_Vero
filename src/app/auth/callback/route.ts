@@ -10,7 +10,8 @@ export async function GET(request: NextRequest) {
   const next = safeNext(url.searchParams.get('next'));
   if (code) {
     const sb = await createClient();
-    await sb.auth.exchangeCodeForSession(code);
+    const { error } = await sb.auth.exchangeCodeForSession(code);
+    if (error) return NextResponse.redirect(new URL('/login?error=oauth', url.origin));
   }
   if (next) return NextResponse.redirect(new URL(next, url.origin));
   const profile = await getProfile();
