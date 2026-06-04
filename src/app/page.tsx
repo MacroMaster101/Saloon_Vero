@@ -18,7 +18,9 @@ import { BookingWizard } from '@/components/booking/booking-wizard';
 import { LoadingScreen } from '@/components/site/loading-screen';
 import { getGallery, getBookableServices, getStylists } from '@/lib/queries';
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
+  const sp = await searchParams;
+  const deleted = sp.deleted === '1';
   const [gallery, services, stylists] = await Promise.all([
     getGallery(),
     getBookableServices(),
@@ -26,6 +28,11 @@ export default async function Home() {
   ]);
   return (
     <>
+      {deleted && (
+        <div role="status" style={{ background: 'var(--accent-tint)', color: 'var(--fg)', textAlign: 'center', padding: '12px 16px', fontSize: 14 }}>
+          Your account and personal data have been deleted. Thank you for visiting Vero Salon.
+        </div>
+      )}
       <LoadingScreen />
       <ScrollProgress />
       <LenisProvider />
