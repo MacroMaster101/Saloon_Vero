@@ -214,7 +214,10 @@ export interface Database {
       };
     };
     Views: Record<never, never>;
-    Functions: Record<never, never>;
+    Functions: {
+      anonymize_user_bookings: { Args: { target: string }; Returns: undefined };
+      purge_old_bookings: { Args: { older_than_months?: number }; Returns: number };
+    };
     Enums: Record<never, never>;
     CompositeTypes: Record<never, never>;
   };
