@@ -1,6 +1,7 @@
 import { requireRole } from '@/lib/supabase/auth';
 import { getMyBookings } from '@/lib/queries';
 import { ProfileForm } from './profile-form';
+import { DeleteAccount } from './delete-account';
 
 export default async function AccountPage() {
   const profile = await requireRole(['user', 'staff', 'admin'], '/account');
@@ -25,6 +26,7 @@ export default async function AccountPage() {
             </ul>
           )}
         </section>
+        <DeleteAccount />
       </div>
     </div></main>
   );
