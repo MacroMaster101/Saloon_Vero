@@ -10,6 +10,7 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 
 export type BookingStatus = 'confirmed' | 'cancelled' | 'completed' | 'no_show';
 export type ServiceCategory = 'hair' | 'beauty';
+export type UserRole = 'user' | 'staff' | 'admin';
 
 export interface Database {
   public: {
@@ -123,6 +124,7 @@ export interface Database {
           ends_at: string;
           status: BookingStatus;
           created_at: string;
+          user_id: string | null;
         };
         Insert: {
           id?: string;
@@ -137,6 +139,7 @@ export interface Database {
           ends_at: string;
           status?: BookingStatus;
           created_at?: string;
+          user_id?: string | null;
         };
         Update: Partial<Database['public']['Tables']['bookings']['Insert']>;
         Relationships: [
@@ -176,9 +179,45 @@ export interface Database {
         Update: Partial<Database['public']['Tables']['gallery']['Insert']>;
         Relationships: [];
       };
+      profiles: {
+        Row: {
+          id: string;
+          role: 'user' | 'staff' | 'admin';
+          stylist_id: string | null;
+          full_name: string | null;
+          email: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id: string;
+          role?: 'user' | 'staff' | 'admin';
+          stylist_id?: string | null;
+          full_name?: string | null;
+          email?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['profiles']['Insert']>;
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_id_fkey';
+            columns: ['id'];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'profiles_stylist_id_fkey';
+            columns: ['stylist_id'];
+            referencedRelation: 'stylists';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: Record<never, never>;
-    Functions: Record<never, never>;
+    Functions: {
+      anonymize_user_bookings: { Args: { target: string }; Returns: undefined };
+      purge_old_bookings: { Args: { older_than_months?: number }; Returns: number };
+    };
     Enums: Record<never, never>;
     CompositeTypes: Record<never, never>;
   };
@@ -191,3 +230,4 @@ export type BusinessHour = Database['public']['Tables']['business_hours']['Row']
 export type BlockedSlot = Database['public']['Tables']['blocked_slots']['Row'];
 export type Booking = Database['public']['Tables']['bookings']['Row'];
 export type GalleryItem = Database['public']['Tables']['gallery']['Row'];
+export type Profile = Database['public']['Tables']['profiles']['Row'];
