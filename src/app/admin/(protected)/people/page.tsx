@@ -1,6 +1,6 @@
 import { requireRole } from '@/lib/supabase/auth';
 import { createClient } from '@/lib/supabase/server';
-import { setRole } from './actions';
+import { setRole, adminDeleteUser } from './actions';
 
 export default async function PeoplePage() {
   await requireRole(['admin'], '/admin/people');
@@ -28,6 +28,10 @@ export default async function PeoplePage() {
                 {(stylists ?? []).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
               </select>
               <button className="btn btn--primary" type="submit">Save</button>
+            </form>
+            <form action={adminDeleteUser} style={{ marginTop: 8 }}>
+              <input type="hidden" name="id" value={p.id} />
+              <button type="submit" className="btn btn--ghost" style={{ color: 'var(--error)', borderColor: 'var(--error)' }}>Delete</button>
             </form>
           </li>
         ))}
