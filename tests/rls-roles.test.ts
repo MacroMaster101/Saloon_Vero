@@ -12,7 +12,10 @@ async function makeUser(email: string) {
   const password = `T${crypto.randomUUID()}!`;
   const { data } = await admin.auth.admin.createUser({ email, password, email_confirm: true });
   const id = data.user!.id;
-  const sb = createSb(url, anonKey);
+  // Each client must have ISOLATED, non-persistent auth storage. Otherwise the
+  // default shared storage means the second sign-in clobbers the first user's
+  // session, and "alice.sb" would silently be authenticated as bob.
+  const sb = createSb(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false } });
   await sb.auth.signInWithPassword({ email, password });
   return { id, sb };
 }
