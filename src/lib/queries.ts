@@ -73,11 +73,20 @@ export async function getBusinessHours() {
   return data && data.length > 0 ? data : FALLBACK_HOURS;
 }
 
+// A safe email contains no PostgREST filter metacharacters or ilike wildcards.
+// The email comes from the verified auth session, but we still refuse to
+// interpolate anything that could break out of the .or() clause (defense in
+// depth against filter injection) — comma/paren are PostgREST separators,
+// %/_ are ilike wildcards, : guards against operator tokens.
+function isSafeEmailForFilter(email: string): boolean {
+  return /^[^,()%_:\s]+@[^,()%_:\s]+$/.test(email);
+}
+
 // Builds a PostgREST `.or()` filter string for a user's booking history:
 // their own (user_id) plus legacy guest bookings matching their verified email.
 export function historyOrFilter(userId: string, email: string | null): string {
   const own = `user_id.eq.${userId}`;
-  if (!email) return own;
+  if (!email || !isSafeEmailForFilter(email)) return own;
   return `${own},and(user_id.is.null,customer_email.ilike.${email.toLowerCase()})`;
 }
 
