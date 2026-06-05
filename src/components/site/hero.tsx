@@ -1,8 +1,9 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import { SplineHero } from './spline-hero';
+import { BLOCK_DEFAULTS, type HeroContent } from '@/lib/content/blocks';
 
-export function Hero() {
+export function Hero({ content = BLOCK_DEFAULTS.hero }: { content?: HeroContent }) {
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -37,16 +38,13 @@ export function Hero() {
     <section className="ehero" ref={heroRef}>
       <div className="wrap ehero__grid">
         <div className="ehero__copy">
-          <span className="ehero__index">Est. — Pasyala · Sri Lanka</span>
+          <span className="ehero__index">{content.eyebrow}</span>
           <h1 className="ehero__display">
-            <span className="ln">The art of</span>
-            <span className="ln"><em>looking</em></span>
-            <span className="ln">remarkable.</span>
+            <span className="ln">{content.line1}</span>
+            <span className="ln"><em>{content.line2Em}</em></span>
+            <span className="ln">{content.line3}</span>
           </h1>
-          <p className="ehero__lead">
-            A warm, unisex home for hair, colour and beauty in Pasyala. Considered
-            cuts and friendly care — for him and for her, unhurried.
-          </p>
+          <p className="ehero__lead">{content.lead}</p>
           <div className="ehero__actions">
             <a href="#book" className="btn btn--primary btn--lg">Reserve your visit</a>
             <a href="#services" className="ehero__link">

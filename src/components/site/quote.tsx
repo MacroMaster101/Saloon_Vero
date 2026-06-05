@@ -1,10 +1,12 @@
-export function Quote() {
+import { BLOCK_DEFAULTS, type QuoteContent } from '@/lib/content/blocks';
+
+export function Quote({ content = BLOCK_DEFAULTS.quote }: { content?: QuoteContent }) {
   return (
     <section className="section quote">
       <div className="wrap reveal">
-        <div className="stars">★★★★★</div>
-        <blockquote>&ldquo;Friendly staff and a great cut <em>every time.</em> Easily the best salon in Pasyala.&rdquo;</blockquote>
-        <div className="by">Google review · 4.9 ★ average</div>
+        <div className="stars">{content.stars}</div>
+        <blockquote>{content.text}</blockquote>
+        <div className="by">{content.by}</div>
       </div>
     </section>
   );

@@ -212,6 +212,12 @@ export interface Database {
           },
         ];
       };
+      site_content: {
+        Row: { key: string; value: Record<string, unknown>; updated_at: string };
+        Insert: { key: string; value?: Record<string, unknown>; updated_at?: string };
+        Update: Partial<Database['public']['Tables']['site_content']['Insert']>;
+        Relationships: [];
+      };
     };
     Views: Record<never, never>;
     Functions: {
@@ -225,6 +231,7 @@ export interface Database {
 
 // Convenience row aliases used throughout the app.
 export type Service = Database['public']['Tables']['services']['Row'];
+export type SiteContentRow = Database['public']['Tables']['site_content']['Row'];
 export type Stylist = Database['public']['Tables']['stylists']['Row'];
 export type BusinessHour = Database['public']['Tables']['business_hours']['Row'];
 export type BlockedSlot = Database['public']['Tables']['blocked_slots']['Row'];

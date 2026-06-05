@@ -1,4 +1,6 @@
-export function Footer() {
+import { BLOCK_DEFAULTS, type ContactContent } from '@/lib/content/blocks';
+
+export function Footer({ content = BLOCK_DEFAULTS.contact }: { content?: ContactContent }) {
   return (
     <footer className="foot">
       <div className="wrap">
@@ -10,7 +12,7 @@ export function Footer() {
               </span>
               <span className="brand__name" style={{ color: 'var(--cream)' }}>VERO<small>SALON · UNISEX</small></span>
             </div>
-            <p>Hair &amp; beauty unisex salon on Attanagalla Road, Pasyala. For him and her.</p>
+            <p>{content.footerBlurb}</p>
           </div>
           <div>
             <h5>Salon</h5>
@@ -32,15 +34,15 @@ export function Footer() {
           <div>
             <h5>Contact</h5>
             <ul>
-              <li><a href="tel:0773699620">077 369 9620</a></li>
+              <li><a href={`tel:${content.phonePrimary.replace(/\s/g, '')}`}>{content.phonePrimary}</a></li>
               <li><a href="tel:0710944410">071 094 4410</a></li>
-              <li><a href="https://www.facebook.com/SaloonRV/" target="_blank" rel="noopener">Facebook</a></li>
+              <li><a href={content.facebookUrl} target="_blank" rel="noopener">Facebook</a></li>
             </ul>
           </div>
         </div>
         <div className="foot__bottom">
           <span>© 2026 Vero Salon · Hair &amp; Beauty Unisex.</span>
-          <span>Attanagalla Road, Pasyala · 077 369 9620</span>
+          <span>{content.address} · {content.phonePrimary}</span>
         </div>
       </div>
     </footer>
