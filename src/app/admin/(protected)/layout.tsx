@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { requireRole } from '@/lib/supabase/auth';
 import { signOut } from '../actions';
 import { Icon, type IconName } from '@/components/ui/icon';
+import { NavLinks } from './nav-links';
 
 const ADMIN_NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Dashboard', icon: 'grid' },
@@ -32,11 +32,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
           <span className="avatar"><b>{initial}</b></span>
           <div className="side__name">{profile.fullName ?? profile.email}</div>
         </div>
-        <nav className="side__nav">
-          {nav.map((n) => (
-            <Link key={n.href} href={n.href}><Icon name={n.icon} className="ic" /> {n.label}</Link>
-          ))}
-        </nav>
+        <NavLinks items={nav} />
         <div className="side__foot">
           <form action={signOut}><button className="btn btn--ghost" type="submit"><Icon name="logout" className="ic" /> Sign out</button></form>
         </div>
