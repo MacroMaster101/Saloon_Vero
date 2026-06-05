@@ -6,11 +6,11 @@ export function DeleteAccount() {
   const [open, setOpen] = useState(false);
   const [state, action] = useActionState(deleteMyAccount, undefined);
   return (
-    <section className="book__card" style={{ display: 'block', padding: 24, maxWidth: 480, borderColor: 'var(--error)' }}>
-      <h2 className="step__title" style={{ color: 'var(--error)' }}>Danger zone</h2>
+    <section className="panel panel--danger" style={{ maxWidth: 480 }}>
+      <h2>Danger zone</h2>
       <p className="step__hint">Delete your account and personal data. Your past appointments are kept by the salon in anonymized form. This cannot be undone.</p>
       {!open ? (
-        <button type="button" className="btn btn--ghost" onClick={() => setOpen(true)}>Delete my account &amp; data</button>
+        <button type="button" className="btn btn--danger-outline" onClick={() => setOpen(true)}>Delete my account &amp; data</button>
       ) : (
         <form action={action}>
           <div className="field"><label htmlFor="confirm">Type DELETE to confirm</label><input id="confirm" name="confirm" autoComplete="off" /></div>

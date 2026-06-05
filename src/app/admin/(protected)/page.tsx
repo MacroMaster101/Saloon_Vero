@@ -51,7 +51,7 @@ export default async function AdminHome() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-        <h1 className="h-section" style={{ fontSize: 32 }}>Dashboard</h1>
+        <div><span className="eyebrow">Overview</span><h1 className="h-section" style={{ fontSize: 30, marginTop: 8 }}>Dashboard</h1></div>
         <a href="/admin/blocked-slots" className="btn btn--ghost">Blocked slots</a>
       </div>
 

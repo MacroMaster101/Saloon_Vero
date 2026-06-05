@@ -4,7 +4,7 @@
 
 ### Hair & Beauty Unisex Salon · Pasyala, Sri Lanka 🇱🇰
 
-**A production website + account-free booking system** — polished marketing site, a four-step booking flow with race-proof availability, and an auth-protected admin dashboard.
+**A production salon website + booking platform** — polished marketing site, a four-step booking flow with race-proof availability, customer accounts (email/password + Google), and a role-based admin & staff dashboard.
 
 <br/>
 
@@ -32,12 +32,15 @@
 
 | | Feature |
 |---|---|
-| 🎨 | **Crimson + black design system** — light/dark themes with no flash, Plus Jakarta Sans |
+| 🎨 | **Warm Modern design system** — gold + warm-neutral palette, light/dark themes with no flash, Poppins |
 | 🌀 | **Rich motion** — parallax hero, 3D coverflow lookbook, pinned step-through (all reduced-motion aware) |
 | 📅 | **4-step booking** — service → stylist → date & time → details, with real server-side availability |
 | 🔒 | **Race-proof slots** — a Postgres `EXCLUDE` constraint makes double-booking impossible |
+| 🔑 | **Accounts & auth** — split-screen **login** + **signup** (email/password with live password-strength rules, or Google OAuth), email-confirmation flow |
+| 👤 | **Customer account** — sidebar dashboard: profile, bookings history, member-since/last-sign-in, account deletion |
+| 🧑‍🤝‍🧑 | **Roles** — `user` / `staff` / `admin`, enforced by Supabase RLS; admins manage roles & stylist links in **People** |
 | 📧 | **Email confirmations** — via Resend, with a pluggable SMS stub for later |
-| 🛠️ | **Admin dashboard** — live bookings (Realtime), status controls & blocked-slot management |
+| 🛠️ | **Admin & staff dashboard** — sidebar shell, live bookings (Realtime), status controls, searchable/filterable lists, blocked-slot management, staff "my schedule" |
 | ✅ | **Tested** — Vitest unit + integration and a Playwright end-to-end booking flow |
 
 ---
@@ -46,7 +49,7 @@
 
 - ⚡ **Next.js 16** — App Router, React 19, Server Actions
 - 🟦 **TypeScript** (strict mode)
-- 🎨 **Tailwind CSS v4** — custom crimson + black tokens, light/dark, no-flash
+- 🎨 **Tailwind CSS v4** — custom Warm Modern (gold) tokens, light/dark, no-flash
 - 🌀 **Framer Motion + Lenis** — parallax, coverflow, pinned scroll
 - 📝 **React Hook Form + Zod** — typed, validated booking form
 - 🗄️ **Supabase** — Postgres · Auth · RLS · Realtime, via `@supabase/ssr`
@@ -110,9 +113,25 @@ npx supabase gen types typescript --db-url "<connection-string>" > lib/supabase/
 SUPABASE_ACCESS_TOKEN=... npx supabase gen types typescript --project-id <ref> > lib/supabase/types.ts
 ```
 
-### 👤 Admin user
+### 🔑 Auth configuration (Supabase)
 
-The dashboard at `/admin` uses Supabase email/password auth. Create the salon owner in **Supabase → Authentication → Users → Add user** (enable **Auto Confirm**), then sign in at `/admin/login`.
+Auth is handled by Supabase (`@supabase/ssr`). Sign-in and registration live at **`/login`** and **`/signup`** (email/password or Google). `/admin/login` simply redirects to `/login?next=/admin`.
+
+In **Supabase → Authentication → URL Configuration**, set:
+
+- **Site URL** → your environment's base URL (e.g. `http://localhost:3000` in dev, your domain in prod).
+- **Redirect URLs** → add **both** `http://localhost:3000/auth/callback` **and** `https://<your-domain>/auth/callback` (the OAuth + email-confirmation callback).
+
+In **Authentication → Providers**:
+
+- **Email** → keep **"Confirm email" ON** so the signup "check your email" flow is accurate (with it off, signup would create a live session silently).
+- **Google** → enable and add your OAuth client ID/secret if you want Google sign-in.
+
+> 🔁 The code derives every redirect from `NEXT_PUBLIC_SITE_URL`, so that env var **must** match your deployed domain or OAuth/confirmation links will point at the wrong host.
+
+### 👤 Roles (user / staff / admin)
+
+New sign-ups are `user` by default. To grant **staff** or **admin**: create/sign in the owner account, promote it to `admin` directly in the `profiles` table (Supabase SQL editor), then manage everyone else from the in-app **Admin → People** page (set role + linked stylist). Roles are enforced by RLS and by `requireRole(...)` route guards. `admin`/`staff` land on `/admin`; `user` lands on `/`.
 
 ---
 
@@ -137,21 +156,28 @@ npm run e2e        # 🎭 Playwright e2e (run `npm run build` first)
 - 🧮 **Availability** (`lib/availability.ts`) — a pure, unit-tested function: given business hours, a service duration, and busy intervals (confirmed bookings + blocked slots), it returns open start times. The `getAvailability` server action feeds it real data; "any stylist" unions every stylist's openings.
 - 🔒 **Double-booking protection** — enforced in Postgres by a GiST `EXCLUDE` constraint, so two confirmed bookings for the same stylist can't overlap. `createBooking` catches the violation (`23P01`) and returns a graceful "slot just taken." Price & duration are always re-derived from the DB — never trusted from the client.
 - 📨 **Notifications** (`lib/notify/`) — go through a `Notifier` interface. Resend sends the email; an SMS stub logs a placeholder. Email no-ops safely when `RESEND_API_KEY` is unset, so bookings still succeed without it.
-- 🛠️ **Admin** (`/admin`) — guarded by a route group; lists today's & upcoming bookings with live updates (Supabase Realtime) and status controls, plus blocked-slot management that availability respects.
+- 🔑 **Auth & accounts** — `/login` and `/signup` (split-screen) use Supabase email/password or Google OAuth; both flow through `/auth/callback`. Signup enforces password rules (`lib/auth/password.ts`) on the client *and* server. `safeNext` sanitizes every post-login redirect; `roleDefaultPath` sends each role to its home. `/account` is a sidebar dashboard (profile, bookings, account deletion).
+- 🛠️ **Admin & staff** (`/admin`) — guarded by `requireRole`; a sidebar shell with role-scoped nav. Admins see all bookings (live via Supabase Realtime) with status controls, a searchable/filterable table, **People** (role + stylist management), and blocked-slot management. Staff see only **My schedule** — their own RLS-scoped bookings — with the same search/filter toolbar.
 
 ---
 
 ## 📂 Project structure
 
 ```
-app/                  # 🧭 routes: public page, /book actions, /admin (protected)
-components/site/       # 🎨 marketing sections (hero, lookbook, services, …)
-components/booking/    # 📅 4-step wizard
-components/admin/      # 🛠️ dashboard table, block form
-lib/                   # 🧰 availability, time, validators, queries, notify, supabase clients
-supabase/migrations/   # 🗄️ schema + RLS + realtime
-supabase/seed.sql      # 🌱 real Vero data
-tests/                 # 🧪 vitest unit/integration; tests/e2e Playwright
+app/                   # 🧭 routes: public page, /book actions
+  login/ · signup/     # 🔑 split-screen auth (email/password + Google)
+  account/             # 👤 customer sidebar dashboard (profile, bookings, delete)
+  admin/(protected)/   # 🛠️ role-guarded shell: dashboard, people, schedule, blocked-slots
+  auth/callback/       # 🔁 OAuth + email-confirmation handler
+components/site/        # 🎨 marketing sections (hero, lookbook, services, …)
+components/booking/     # 📅 4-step wizard
+components/admin/       # 🛠️ bookings table, list-toolbar (search/filter), block form
+components/ui/          # 🧩 shared primitives (size-constrained Icon, …)
+lib/                    # 🧰 availability, time, validators, queries, notify, supabase clients
+lib/auth/              # 🔐 password rules, redirect-safety (safeNext), roles
+supabase/migrations/    # 🗄️ schema + RLS + realtime
+supabase/seed.sql       # 🌱 real Vero data
+tests/                  # 🧪 vitest unit/integration; tests/e2e Playwright
 ```
 
 ---
@@ -159,8 +185,9 @@ tests/                 # 🧪 vitest unit/integration; tests/e2e Playwright
 ## ▲ Deploy (Vercel)
 
 1. Import the repo into Vercel.
-2. Add the same environment variables (Project → Settings → Environment Variables). Mark `SUPABASE_SERVICE_ROLE_KEY` and `RESEND_API_KEY` as **secret**; set `NEXT_PUBLIC_SITE_URL` to your production domain.
-3. Deploy 🚀 — public pages are server-rendered and booking runs via Server Actions; no extra build config needed.
+2. Add the same environment variables (Project → Settings → Environment Variables). Mark `SUPABASE_SERVICE_ROLE_KEY` and `RESEND_API_KEY` as **secret**; set `NEXT_PUBLIC_SITE_URL` to your production domain (e.g. `https://saloon-vero.vercel.app`).
+3. In **Supabase → Authentication → URL Configuration**, add `https://<your-domain>/auth/callback` to **Redirect URLs** (and set the **Site URL**), or Google sign-in and email-confirmation links will fail in production.
+4. Deploy 🚀 — public pages are server-rendered and booking/auth run via Server Actions; no extra build config needed. Production deploys from the `main` branch.
 
 ---
 

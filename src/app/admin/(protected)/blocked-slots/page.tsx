@@ -58,7 +58,7 @@ export default async function BlockedSlotsPage() {
                   padding: '14px 16px',
                   borderRadius: 12,
                   border: '1.5px solid var(--line)',
-                  background: 'var(--surface-2)',
+                  background: 'var(--bg-2)',
                 }}
               >
                 <div style={{ display: 'grid', gap: 4 }}>

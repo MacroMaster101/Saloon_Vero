@@ -4,7 +4,7 @@ import { ImgSlot } from '@/components/site/img-slot';
 export async function Stylists() {
   const stylists = await getStylists();
   return (
-    <section className="section" id="team" style={{ background: 'var(--surface-2)' }}>
+    <section className="section" id="team" style={{ background: 'var(--bg-2)' }}>
       <div className="wrap">
         <div className="sec-head reveal">
           <div>
