@@ -9,10 +9,10 @@ export default async function ServicesPage() {
   const { data: services } = await sb.from('services').select('*').order('sort_order');
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
+      <div className="ahead">
         <div>
           <span className="eyebrow">Catalogue</span>
-          <h1 className="h-section" style={{ fontSize: 30, margin: '8px 0 22px' }}>Services</h1>
+          <h1 className="ahead__title">Services</h1>
         </div>
         <Link href="/#services" target="_blank" className="btn btn--ghost">View on site ↗</Link>
       </div>

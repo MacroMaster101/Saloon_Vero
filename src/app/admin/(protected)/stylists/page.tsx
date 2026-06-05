@@ -9,10 +9,10 @@ export default async function StylistsPage() {
   const { data: stylists } = await sb.from('stylists').select('*').order('sort_order');
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
+      <div className="ahead">
         <div>
           <span className="eyebrow">Team</span>
-          <h1 className="h-section" style={{ fontSize: 30, margin: '8px 0 22px' }}>Stylists</h1>
+          <h1 className="ahead__title">Stylists</h1>
         </div>
         <Link href="/#stylists" target="_blank" className="btn btn--ghost">View on site ↗</Link>
       </div>

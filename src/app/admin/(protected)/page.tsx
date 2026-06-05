@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Booking } from '@/lib/supabase/types';
 import { BookingsTable, type BookingRow } from '@/components/admin/bookings-table';
+import { StatTiles, type StatTile } from '@/components/admin/stat-tiles';
 
 type Row = Booking & { services: { name: string } | null; stylists: { name: string } | null };
 
@@ -39,6 +40,12 @@ export default async function AdminHome() {
   const rows = (data ?? []) as unknown as Row[];
   const todayKey = dayFmt.format(new Date());
 
+  const [{ count: serviceCount }, { count: bookableCount }, { count: stylistCount }] = await Promise.all([
+    sb.from('services').select('*', { count: 'exact', head: true }),
+    sb.from('services').select('*', { count: 'exact', head: true }).eq('bookable', true),
+    sb.from('stylists').select('*', { count: 'exact', head: true }).eq('is_active', true),
+  ]);
+
   // Group by salon-local calendar date. Past bookings are excluded (Today + Upcoming only).
   const today: BookingRow[] = [];
   const upcoming: BookingRow[] = [];
@@ -48,12 +55,20 @@ export default async function AdminHome() {
     else if (key > todayKey) upcoming.push(toRow(b));
   }
 
+  const tiles: StatTile[] = [
+    { k: 'Today', n: String(today.length), sub: 'bookings' },
+    { k: 'Upcoming', n: String(upcoming.length), sub: 'scheduled' },
+    { k: 'Services', n: String(serviceCount ?? 0), sub: `${bookableCount ?? 0} bookable` },
+    { k: 'Stylists', n: String(stylistCount ?? 0), sub: 'active' },
+  ];
+
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-        <div><span className="eyebrow">Overview</span><h1 className="h-section" style={{ fontSize: 30, marginTop: 8 }}>Dashboard</h1></div>
+      <div className="ahead">
+        <div><span className="eyebrow">Overview</span><h1 className="ahead__title">Dashboard</h1></div>
         <a href="/admin/blocked-slots" className="btn btn--ghost">Blocked slots</a>
       </div>
+      <StatTiles tiles={tiles} />
 
       {error && (
         <p className="lead" style={{ marginTop: 12, color: 'var(--accent)' }}>
