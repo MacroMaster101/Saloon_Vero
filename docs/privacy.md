@@ -1,10 +1,10 @@
 # Vero Salon — Privacy Policy
 
-_Last updated: 2026-06-04_
+_Last updated: 2026-06-05_
 
 ## What we collect
 - **When you book:** your name, mobile number, email (optional), and any notes you add.
-- **When you create an account (Google sign-in):** your name and email.
+- **When you create an account:** your name and email — either by signing in with Google, or by registering with an email address and password. Passwords are stored securely (hashed) by our authentication provider; we never see your plain password.
 
 ## Why we collect it
 To schedule and confirm your appointments, contact you about your booking, and keep an appointment history for your account.

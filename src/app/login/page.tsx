@@ -5,7 +5,5 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const sp = await searchParams;
   const next = safeNext(sp.next) ?? '';
   const oauthError = sp.error === 'oauth' ? 'Google sign-in failed. Please try again.' : null;
-  return (
-    <main className="section"><div className="wrap"><LoginForm next={next} oauthError={oauthError} /></div></main>
-  );
+  return <main><LoginForm next={next} oauthError={oauthError} /></main>;
 }
