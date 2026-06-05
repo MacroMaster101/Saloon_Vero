@@ -6,6 +6,10 @@ import { Icon, type IconName } from '@/components/ui/icon';
 const ADMIN_NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Dashboard', icon: 'grid' },
   { href: '/admin/people', label: 'People', icon: 'people' },
+  { href: '/admin/services', label: 'Services', icon: 'scissors' },
+  { href: '/admin/stylists', label: 'Stylists', icon: 'user' },
+  { href: '/admin/gallery', label: 'Gallery', icon: 'grid' },
+  { href: '/admin/content', label: 'Content', icon: 'cog' },
   { href: '/admin/schedule', label: 'Schedule', icon: 'calendar' },
 ];
 const STAFF_NAV: { href: string; label: string; icon: IconName }[] = [

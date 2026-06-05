@@ -17,14 +17,21 @@ import { Footer } from '@/components/site/footer';
 import { BookingWizard } from '@/components/booking/booking-wizard';
 import { LoadingScreen } from '@/components/site/loading-screen';
 import { getGallery, getBookableServices, getStylists } from '@/lib/queries';
+import { getSiteContent } from '@/lib/content/get';
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
   const sp = await searchParams;
   const deleted = sp.deleted === '1';
-  const [gallery, services, stylists] = await Promise.all([
+  const [gallery, services, stylists, quote, cta, story, hero, stats, contact] = await Promise.all([
     getGallery(),
     getBookableServices(),
     getStylists(),
+    getSiteContent('quote'),
+    getSiteContent('cta'),
+    getSiteContent('story'),
+    getSiteContent('hero'),
+    getSiteContent('stats'),
+    getSiteContent('contact'),
   ]);
   return (
     <>
@@ -39,9 +46,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
       <RevealObserver />
       <Nav />
       <main id="top">
-        <Hero />
+        <Hero content={hero} />
         <Marquee />
-        <Stats />
+        <Stats content={stats} />
         <Services />
         <Lookbook items={gallery} />
         <HowItWorks />
@@ -60,12 +67,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
           </div>
         </section>
         <Stylists />
-        <Story />
-        <Quote />
-        <Visit />
-        <Cta />
+        <Story content={story} />
+        <Quote content={quote} />
+        <Visit content={contact} />
+        <Cta content={cta} />
       </main>
-      <Footer />
+      <Footer content={contact} />
     </>
   );
 }

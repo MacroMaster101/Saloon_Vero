@@ -2,6 +2,7 @@ import { getBusinessHours } from '@/lib/queries';
 import { minutesToLabel } from '@/lib/format';
 import { ImgSlot } from '@/components/site/img-slot';
 import type { BusinessHour } from '@/lib/supabase/types';
+import { BLOCK_DEFAULTS, type ContactContent } from '@/lib/content/blocks';
 
 // Monday-first order; values are day_of_week (0=Sun..6=Sat).
 const DAYS: { dow: number; label: string }[] = [
@@ -14,7 +15,7 @@ const DAYS: { dow: number; label: string }[] = [
   { dow: 0, label: 'Sunday' },
 ];
 
-export async function Visit() {
+export async function Visit({ content = BLOCK_DEFAULTS.contact }: { content?: ContactContent }) {
   const hours = await getBusinessHours();
   const byDow = new Map<number, BusinessHour>(hours.map((h) => [h.day_of_week, h]));
 
@@ -36,16 +37,16 @@ export async function Visit() {
             })}
           </ul>
           <div className="contact-row">
-            <div className="info-card"><div className="k">Address</div><div className="v">Attanagalla Road, Pasyala</div></div>
-            <div className="info-card"><div className="k">Plus code</div><div className="v">545H+F6 Pasyala</div></div>
+            <div className="info-card"><div className="k">Address</div><div className="v">{content.address}</div></div>
+            <div className="info-card"><div className="k">Plus code</div><div className="v">{content.plusCode}</div></div>
           </div>
           <div className="contact-row">
-            <div className="info-card"><div className="k">Call / WhatsApp</div><div className="v">077 369 9620</div></div>
-            <div className="info-card"><div className="k">Also</div><div className="v">071 094 4410 · 075 095 3004</div></div>
+            <div className="info-card"><div className="k">Call / WhatsApp</div><div className="v">{content.phonePrimary}</div></div>
+            <div className="info-card"><div className="k">Also</div><div className="v">{content.phoneOther}</div></div>
           </div>
           <div className="contact-row">
             <a href="#book" className="btn btn--primary">Book your visit</a>
-            <a href="https://www.facebook.com/SaloonRV/" target="_blank" rel="noopener" className="btn btn--ghost">Visit Facebook</a>
+            <a href={content.facebookUrl} target="_blank" rel="noopener" className="btn btn--ghost">Visit Facebook</a>
           </div>
         </div>
         <div className="map reveal">

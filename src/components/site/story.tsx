@@ -1,6 +1,7 @@
 import { ImgSlot } from '@/components/site/img-slot';
+import { BLOCK_DEFAULTS, type StoryContent } from '@/lib/content/blocks';
 
-export function Story() {
+export function Story({ content = BLOCK_DEFAULTS.story }: { content?: StoryContent }) {
   return (
     <section className="section story" id="story">
       <div className="wrap story__grid">
@@ -9,16 +10,15 @@ export function Story() {
           <ImgSlot src="/images/story/interior.png" alt="Salon interior" />
         </div>
         <div className="story__copy reveal">
-          <span className="eyebrow gold">Our Story</span>
-          <h2 className="h-section">Pasyala&apos;s unisex hair &amp; beauty home.</h2>
-          <p>Vero Salon is a friendly neighbourhood salon on Attanagalla Road, Pasyala — a unisex space for hair, colour and beauty, for him and her. We keep it warm, welcoming and unhurried.</p>
-          <p>Sharp cuts, fresh colour, beard grooming, facials and full bridal — done by a team that takes the time to get you right. The 4.9-star reviews say the rest.</p>
+          <span className="eyebrow gold">{content.eyebrow}</span>
+          <h2 className="h-section">{content.heading}</h2>
+          {content.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
           <div className="story__stats">
             <div className="stat"><b>4.9★</b><span>Google rating</span></div>
             <div className="stat"><b>Unisex</b><span>Him &amp; her</span></div>
             <div className="stat"><b>Daily</b><span>10 AM – 12 AM</span></div>
           </div>
-          <div className="story__sign">— The Vero Salon team</div>
+          <div className="story__sign">{content.sign}</div>
         </div>
       </div>
     </section>
