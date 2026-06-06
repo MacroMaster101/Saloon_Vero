@@ -693,6 +693,8 @@ html.loader-done .loader-overlay { display:none !important; }
   .shell { grid-template-columns:1fr; margin:0; border-radius:0; }
   .shell__side { border-right:0; border-bottom:1px solid var(--line); padding:16px; }
   .side__meta { display:none; }
+  /* back link sits top-right of the mobile header */
+  .side__back { align-self:flex-end; margin:0 0 6px; order:-1; }
   .side__nav { flex-direction:row; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
   .side__nav a { flex:1 1 auto; justify-content:center; padding:8px 12px; font-size:13px; }
   .side__foot { margin-top:12px; }
@@ -784,8 +786,18 @@ html.loader-done .loader-overlay { display:none !important; }
 @media (max-width:640px) {
   .shell__main { padding:20px 16px; }
   .ahead__title { font-size:24px; }
-  .toolbar { gap:9px; }
-  .search { min-width:0; }
+
+  /* toolbar: full-width search on its own line, chips scroll under it */
+  .toolbar { gap:10px; align-items:stretch; }
+  .search { min-width:0; flex:1 1 100%; order:1; }
+  .chips {
+    order:2; flex:1 1 100%; flex-wrap:nowrap; overflow-x:auto;
+    gap:8px; padding-bottom:4px; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip { flex:none; }                 /* keep chips from squishing */
+  .toolbar .count { order:3; margin:0; }
 
   /* data-table → cards */
   .data-table, .data-table thead, .data-table tbody,

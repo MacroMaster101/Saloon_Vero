@@ -51,7 +51,6 @@ export function AdminBottomNav({
                 {i.label}
               </Link>
             ))}
-            <Link href="/" onClick={closeMore}>Back to site</Link>
           </nav>
           <form action={signOut} className="more-sheet__row" style={{ marginTop: 18 }}>
             <button className="btn btn--ghost" type="submit" style={{ width: '100%' }}>
