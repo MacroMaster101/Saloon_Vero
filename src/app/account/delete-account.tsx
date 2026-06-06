@@ -6,7 +6,7 @@ export function DeleteAccount() {
   const [open, setOpen] = useState(false);
   const [state, action] = useActionState(deleteMyAccount, undefined);
   return (
-    <section className="panel panel--danger" style={{ maxWidth: 480 }}>
+    <section className="panel panel--danger account-panel">
       <h2>Danger zone</h2>
       <p className="step__hint">Delete your account and personal data. Your past appointments are kept by the salon in anonymized form. This cannot be undone.</p>
       {!open ? (

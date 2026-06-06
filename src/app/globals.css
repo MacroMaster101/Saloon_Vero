@@ -603,6 +603,7 @@ html.loader-done .loader-overlay { display:none !important; }
 /* ── Panels ── */
 .panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg);
   padding:24px; box-shadow:0 14px 40px -20px rgba(184,116,42,.16); }
+.account-panel { max-width:480px; }
 .panel h2 { font-size:18px; font-weight:700; margin:0 0 16px; color:var(--fg); }
 .panel--danger { border-color:color-mix(in srgb, var(--error) 45%, var(--line)); }
 .panel--danger h2 { color:var(--error); }
@@ -1150,7 +1151,7 @@ html, body { overflow-x:hidden; }
   .athumb { width:96px; height:96px; }
 
   /* account content panels go full-width and stack their actions */
-  .panel { max-width:none; padding:20px 16px; }
+  .panel, .account-panel { max-width:none; padding:20px 16px; }
   .panel .btn { width:100%; }
   .panel .field input { font-size:16px; }   /* 16px avoids iOS zoom-on-focus */
   .account-bookings, .bk-list { max-width:none !important; }
