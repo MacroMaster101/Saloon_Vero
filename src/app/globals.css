@@ -656,6 +656,7 @@ html.loader-done .loader-overlay { display:none !important; }
   text-transform:uppercase; letter-spacing:.04em; color:var(--fg-2); font-weight:700; }
 .data-table td { padding:12px 14px; border-top:1px solid var(--line); vertical-align:middle; color:var(--fg); }
 .data-table .ref { font-family:ui-monospace, monospace; font-size:12.5px; color:var(--fg-muted); }
+.data-table__actions { white-space:nowrap; }
 
 /* ── Booking / schedule cards ── */
 .bk-list { list-style:none; margin:0; padding:0; display:grid; gap:11px; }
@@ -776,6 +777,44 @@ html.loader-done .loader-overlay { display:none !important; }
 .astatus--err { color:#c0392b; }
 .astatus--ok { color:var(--accent-text); }
 .athumb { width:72px; height:72px; object-fit:cover; border-radius:var(--radius-sm); border:1.5px solid var(--line); }
+
+/* ══ Admin mobile polish (≤640px) ═══════════════════════════
+   Tighter shell, and the 7-column bookings table becomes stacked
+   cards so it's usable on a phone instead of scrolling sideways. */
+@media (max-width:640px) {
+  .shell__main { padding:20px 16px; }
+  .ahead__title { font-size:24px; }
+  .toolbar { gap:9px; }
+  .search { min-width:0; }
+
+  /* data-table → cards */
+  .data-table, .data-table thead, .data-table tbody,
+  .data-table tr, .data-table td { display:block; width:100%; }
+  .data-table { border:0; background:transparent; overflow:visible; }
+  .data-table thead { position:absolute; left:-9999px; }   /* hide header row */
+  .data-table tr {
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:14px; padding:14px 16px; margin-bottom:11px;
+    box-shadow:0 10px 26px -22px rgba(184,116,42,.3);
+  }
+  .data-table td {
+    border:0; padding:5px 0; display:flex; justify-content:space-between;
+    align-items:baseline; gap:14px; text-align:right;
+  }
+  /* label each cell with its column name via data-label */
+  .data-table td::before {
+    content:attr(data-label); text-align:left; flex:none;
+    font-size:10.5px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--fg-muted);
+  }
+  .data-table td.ref { font-size:12px; }
+  .data-table__actions {
+    justify-content:flex-end; flex-wrap:wrap; text-align:right;
+    margin-top:8px; padding-top:10px; border-top:1px solid var(--line);
+  }
+  .data-table__actions::before { display:none; }
+  .data-table__actions .btn { margin:4px 0 0 6px; }
+}
 
 /* ══ Mobile bottom nav ══════════════════════════════════════ */
 .bottom-nav { display:none; }

@@ -25,6 +25,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
   return (
     <div className="shell">
       <aside className="shell__side">
+        <a href="/" className="side__back"><Icon name="arrowLeft" className="ic" /> Back to site</a>
         <div className="side__brand"><span className="pole" style={{ height: 26 }} /> Vero Salon
           <span className="role-badge" style={{ marginLeft: 'auto' }}>{profile.role === 'admin' ? 'Admin' : 'Staff'}</span>
         </div>
