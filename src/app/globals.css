@@ -958,8 +958,13 @@ html.loader-done .loader-overlay { display:none !important; }
 @media (max-width:780px) {
   .nav__inner { gap:12px; height:64px; }
   .brand__name { font-size:17px; }
+  /* push auth right — the theme toggle that used to do this is now hidden.
+     Covers both states: logged-in (.nav__auth) and logged-out (Sign in = .nav__cta) */
+  .nav__auth, .nav .nav__cta { margin-left:auto; }
   .nav__auth { gap:8px; }
   .nav__auth .btn { padding:8px 12px; font-size:13px; }
+  /* theme toggle lives in the More sheet on mobile, not the header */
+  .nav .theme-toggle { display:none; }
 }
 
 /* ══════════════════════════════════════════════════════════════
