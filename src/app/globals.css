@@ -872,7 +872,7 @@ html.loader-done .loader-overlay { display:none !important; }
   .section:not(.booking) {
     min-height:100svh;
     scroll-snap-align:start;
-    display:flex; flex-direction:column; justify-content:center;
+    display:flex; flex-direction:column; justify-content:safe center;
   }
 
   /* tall/short sections opt out of forced full-height + snap */
