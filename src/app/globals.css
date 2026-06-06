@@ -823,3 +823,37 @@ html.loader-done .loader-overlay { display:none !important; }
   .bottom-nav__fab-label { font-size:10.5px; font-weight:700; color:var(--accent-text); }
   .bottom-nav__fab.is-active .bottom-nav__icon { transform:scale(1.04); }
 }
+
+/* ══ Mobile "More" bottom sheet ═════════════════════════════ */
+.more-sheet { display:none; }
+
+@media (max-width:780px) {
+  .more-sheet {
+    display:block; position:fixed; inset:0; z-index:75;
+    background:rgba(0,0,0,.42);
+    opacity:0; pointer-events:none; transition:opacity .25s var(--ease);
+  }
+  .more-sheet.open { opacity:1; pointer-events:auto; }
+  .more-sheet__panel {
+    position:absolute; left:0; right:0; bottom:0;
+    background:var(--surface); color:var(--fg);
+    border-radius:20px 20px 0 0;
+    padding:14px 22px calc(24px + env(safe-area-inset-bottom));
+    transform:translateY(100%); transition:transform .28s var(--ease);
+    box-shadow:0 -10px 40px rgba(46,37,25,.18);
+  }
+  .more-sheet.open .more-sheet__panel { transform:translateY(0); }
+  .more-sheet__grip {
+    width:42px; height:4px; border-radius:4px; background:var(--line);
+    margin:2px auto 14px;
+  }
+  .more-sheet__links { display:flex; flex-direction:column; }
+  .more-sheet__links a {
+    font-size:20px; font-weight:700; color:var(--fg);
+    padding:14px 0; border-bottom:1px solid var(--line);
+  }
+  .more-sheet__row {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:18px; font-size:14px; font-weight:600; color:var(--fg-2);
+  }
+}
