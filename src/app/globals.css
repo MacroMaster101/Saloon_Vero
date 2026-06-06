@@ -98,6 +98,7 @@ body, .nav, .barber, .info-card, .book__card, .book__main,
 .nav__links a::after { content:""; position:absolute; left:0; right:100%; bottom:-2px; height:2px; background:var(--accent); transition:right .25s var(--ease); }
 .nav__links a:hover { color:var(--fg); }
 .nav__links a:hover::after { right:0; }
+.nav__auth { display:inline-flex; gap:14px; align-items:center; }
 .nav__burger { display:none; background:none; border:0; cursor:pointer; padding:8px; margin-left:auto; }
 .nav__burger span { display:block; width:24px; height:2px; background:var(--fg); margin:5px 0; border-radius:2px; }
 .pole { width:8px; border-radius:var(--radius-pill);
@@ -260,7 +261,7 @@ body, .nav, .barber, .info-card, .book__card, .book__main,
 
 /* rail mobile fallback */
 .rail--static .rail__pin { height:auto; position:static; padding:40px 0; }
-.rail--static .rail__track { overflow-x:auto; transform:none !important; scroll-snap-type:x mandatory; padding-bottom:16px; }
+.rail--static .rail__track { overflow-x:auto; transform:none !important; scroll-snap-type:x mandatory; padding-bottom:16px; max-width:100%; }
 .rail--static .dcard { scroll-snap-align:start; }
 
 /* ── How it works ────────────────────────────────────────── */
@@ -499,11 +500,12 @@ html.loader-done .loader-overlay { display:none !important; }
   .nav__links { display:none; }
   .nav__burger { display:block; margin-left:8px; }
   .nav__cta { display:none; }
+  .nav__auth { display:none; }
   .theme-toggle { margin-left:auto; }
   .stats { grid-template-columns:1fr 1fr; gap:30px 20px; }
   .how__grid { grid-template-columns:1fr; gap:30px; }
   .how__stick { position:static; }
-  .how__visual { max-width:380px; aspect-ratio:16/10; }
+  .how__visual { width:100%; max-width:380px; aspect-ratio:16/10; }
   .how__steps { padding:0; gap:38px; }
   .how__step { opacity:1; }
   .foot__grid { grid-template-columns:1fr 1fr; }
@@ -690,7 +692,11 @@ html.loader-done .loader-overlay { display:none !important; }
   .auth { grid-template-columns:1fr; min-height:0; margin:0; border-radius:0; border:0; }
   .auth__panel { display:none; }
   .shell { grid-template-columns:1fr; margin:0; border-radius:0; }
-  .shell__side { border-right:0; border-bottom:1px solid var(--line); }
+  .shell__side { border-right:0; border-bottom:1px solid var(--line); padding:16px; }
+  .side__meta { display:none; }
+  .side__nav { flex-direction:row; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .side__nav a { flex:1 1 auto; justify-content:center; padding:8px 12px; font-size:13px; }
+  .side__foot { margin-top:12px; }
 }
 
 /* ===== ADMIN (redesign — direction B) ===== */

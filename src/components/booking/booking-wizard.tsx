@@ -209,7 +209,7 @@ export function BookingWizard({ services, stylists }: { services: Service[]; sty
         {/* Keep details mounted from step 3 onward so RHF state survives a
             slot_taken bounce back to step 2 and forward again. */}
         <div style={{ display: step === 3 ? 'block' : 'none' }}>
-          <StepDetails ref={detailsRef} onValidityChange={setDetailsValid} />
+          <StepDetails ref={detailsRef} onValidityChange={setDetailsValid} active={step === 3} />
         </div>
         {step === 4 && result && (
           <Confirmation result={result} customerName={customerName} onRestart={restart} />
