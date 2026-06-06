@@ -22,7 +22,7 @@ export async function Nav() {
         </nav>
         <ThemeToggle />
         <NavAuth profile={profile} />
-        <a href="#book" className="btn btn--primary nav__cta">Book now</a>
+        <a href="#book" className="btn btn--primary nav__cta nav__cta--book">Book now</a>
       </div>
     </header>
   );

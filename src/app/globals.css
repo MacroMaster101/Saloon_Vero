@@ -498,9 +498,7 @@ html.loader-done .loader-overlay { display:none !important; }
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width:980px) {
   .nav__links { display:none; }
-  .nav__burger { display:block; margin-left:8px; }
-  .nav__cta { display:none; }
-  .nav__auth { display:none; }
+  .nav__cta--book { display:none; }
   .theme-toggle { margin-left:auto; }
   .stats { grid-template-columns:1fr 1fr; gap:30px 20px; }
   .how__grid { grid-template-columns:1fr; gap:30px; }
@@ -856,4 +854,12 @@ html.loader-done .loader-overlay { display:none !important; }
     display:flex; align-items:center; justify-content:space-between;
     margin-top:18px; font-size:14px; font-weight:600; color:var(--fg-2);
   }
+}
+
+/* ══ Mobile slim top bar ════════════════════════════════════ */
+@media (max-width:780px) {
+  .nav__inner { gap:12px; height:64px; }
+  .brand__name { font-size:17px; }
+  .nav__auth { gap:8px; }
+  .nav__auth .btn { padding:8px 12px; font-size:13px; }
 }
