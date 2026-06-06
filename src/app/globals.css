@@ -884,3 +884,15 @@ html.loader-done .loader-overlay { display:none !important; }
     scroll-snap-align:none;
   }
 }
+
+/* ══ Mobile overflow & safe-area cleanup ════════════════════ */
+html, body { overflow-x:hidden; }
+
+@media (max-width:780px) {
+  /* decorative elements that can poke past the viewport edge */
+  .story__art .pole { right:-4px; }
+  .splinehero__orb { max-width:90vw; }
+
+  /* top bar respects the notch */
+  .nav { padding-top:env(safe-area-inset-top); }
+}
