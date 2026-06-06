@@ -861,10 +861,48 @@ html.loader-done .loader-overlay { display:none !important; }
   .bottom-nav__fab.is-active .bottom-nav__icon { transform:scale(1.04); }
 }
 
-/* ══ Mobile "More" bottom sheet ═════════════════════════════ */
+/* ══ Admin/staff bottom nav (mirrors public one, no FAB) ════
+   Shell collapses at 860px, so the bar appears there too. */
+.bottom-nav--admin { display:none; }
+
+@media (max-width:860px) {
+  .bottom-nav--admin {
+    position:fixed; left:0; right:0; bottom:0; z-index:70;
+    display:grid; align-items:center;          /* columns set inline per item count */
+    gap:4px; padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+    background:color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    box-shadow:0 -6px 24px rgba(46,37,25,.08);
+  }
+  /* no FAB reordering here — keep natural DOM order */
+  .bottom-nav--admin > * { order:0; }
+  /* the shared tab styles need to apply at this breakpoint too */
+  .bottom-nav--admin .bottom-nav__tab {
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:none; border:0; cursor:pointer; padding:7px 0;
+    color:var(--fg-muted); font:inherit; text-decoration:none;
+  }
+  .bottom-nav--admin .bottom-nav__label { font-size:10px; font-weight:600; letter-spacing:.01em; }
+  .bottom-nav--admin .bottom-nav__tab.is-active { color:var(--accent-text); }
+  .bottom-nav--admin .bottom-nav__tab.is-active .bottom-nav__icon { color:var(--accent); }
+
+  /* replace the in-shell nav: hide sidebar links + sign-out on mobile */
+  .shell .side__nav,
+  .shell .side__foot { display:none; }
+  /* clear the fixed bar so content isn't hidden behind it */
+  .shell__main { padding-bottom:calc(74px + env(safe-area-inset-bottom)); }
+  /* the sheet must clear the bar too (the more-sheet panel sits above it) */
+  .more-sheet--admin .more-sheet__panel { padding-bottom:calc(82px + env(safe-area-inset-bottom)); }
+}
+
+/* ══ Mobile "More" bottom sheet ═════════════════════════════
+   Gated at 860px so the admin sheet works across the full range
+   (the public More button only exists ≤780px, so this is harmless
+   for the public site). */
 .more-sheet { display:none; }
 
-@media (max-width:780px) {
+@media (max-width:860px) {
   .more-sheet {
     display:block; position:fixed; inset:0; z-index:75;
     background:rgba(0,0,0,.42);

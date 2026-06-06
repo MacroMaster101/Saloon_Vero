@@ -2,6 +2,7 @@ import { requireRole } from '@/lib/supabase/auth';
 import { signOut } from '../actions';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { NavLinks } from './nav-links';
+import { AdminBottomNav, type AdminNavItem } from './admin-bottom-nav';
 
 const ADMIN_NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Dashboard', icon: 'grid' },
@@ -17,9 +18,25 @@ const STAFF_NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Dashboard', icon: 'grid' },
 ];
 
+// Mobile bottom-nav split: up to 5 primary tabs in the bar, the rest go to "More".
+const ADMIN_PRIMARY: AdminNavItem[] = [
+  { href: '/admin', label: 'Dashboard', icon: 'grid' },
+  { href: '/admin/people', label: 'People', icon: 'people' },
+  { href: '/admin/services', label: 'Services', icon: 'scissors' },
+  { href: '/admin/schedule', label: 'Schedule', icon: 'calendar' },
+];
+const ADMIN_OVERFLOW: AdminNavItem[] = [
+  { href: '/admin/stylists', label: 'Stylists', icon: 'user' },
+  { href: '/admin/gallery', label: 'Gallery', icon: 'grid' },
+  { href: '/admin/content', label: 'Content', icon: 'cog' },
+];
+
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireRole(['staff', 'admin'], '/admin');
-  const nav = profile.role === 'admin' ? ADMIN_NAV : STAFF_NAV;
+  const isAdmin = profile.role === 'admin';
+  const nav = isAdmin ? ADMIN_NAV : STAFF_NAV;
+  const btmPrimary = isAdmin ? ADMIN_PRIMARY : STAFF_NAV;
+  const btmOverflow = isAdmin ? ADMIN_OVERFLOW : [];
   const initial = (profile.fullName || profile.email || '?').trim().charAt(0).toUpperCase();
 
   return (
@@ -39,6 +56,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
         </div>
       </aside>
       <main className="shell__main">{children}</main>
+      <AdminBottomNav primary={btmPrimary} overflow={btmOverflow} />
     </div>
   );
 }
