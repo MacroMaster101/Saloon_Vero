@@ -1,8 +1,9 @@
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { MobileMenu } from '@/components/site/mobile-menu';
 import { NavAuth } from '@/components/site/nav-auth';
+import { getProfile } from '@/lib/supabase/auth';
 
-export function Nav() {
+export async function Nav() {
+  const profile = await getProfile();
   return (
     <header className="nav" id="nav">
       <div className="wrap nav__inner">
@@ -20,9 +21,8 @@ export function Nav() {
           <a href="#visit">Find Us</a>
         </nav>
         <ThemeToggle />
-        <NavAuth />
-        <a href="#book" className="btn btn--primary nav__cta">Book now</a>
-        <MobileMenu />
+        <NavAuth profile={profile} />
+        <a href="#book" className="btn btn--primary nav__cta nav__cta--book">Book now</a>
       </div>
     </header>
   );

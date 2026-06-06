@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useTransition } from 'react';
+import { useEffect, useId, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { setBookingStatus, type BookingStatus } from '@/app/admin/(protected)/booking-actions';
@@ -37,17 +37,21 @@ function StatusChip({ status }: { status: BookingStatus }) {
 export function BookingsTable({ bookings }: { bookings: BookingRow[] }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  // Unique per instance: the admin page mounts this table more than once
+  // (Today + Upcoming). Supabase reuses a channel by name, so a shared name
+  // makes the second mount call .on() after .subscribe() — which throws.
+  const channelId = useId();
 
   useEffect(() => {
     const sb = createClient();
     const ch = sb
-      .channel('admin-bookings')
+      .channel(`admin-bookings:${channelId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => router.refresh())
       .subscribe();
     return () => {
       sb.removeChannel(ch);
     };
-  }, [router]);
+  }, [router, channelId]);
 
   function onSet(id: string, status: BookingStatus) {
     startTransition(async () => {
@@ -87,16 +91,16 @@ export function BookingsTable({ bookings }: { bookings: BookingRow[] }) {
             <tbody>
               {rows.map((b) => (
                 <tr key={b.id}>
-                  <td>{b.whenLabel}</td>
-                  <td>
+                  <td data-label="When">{b.whenLabel}</td>
+                  <td data-label="Customer">
                     <div style={{ fontWeight: 600 }}>{b.customerName}</div>
                     <div style={{ opacity: 0.65, fontSize: 12.5 }}>{b.customerPhone}</div>
                   </td>
-                  <td>{b.serviceName}</td>
-                  <td>{b.stylistName}</td>
-                  <td className="ref">{b.reference}</td>
-                  <td><StatusChip status={b.status} /></td>
-                  <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                  <td data-label="Service">{b.serviceName}</td>
+                  <td data-label="Stylist">{b.stylistName}</td>
+                  <td className="ref" data-label="Ref">{b.reference}</td>
+                  <td data-label="Status"><StatusChip status={b.status} /></td>
+                  <td className="data-table__actions" style={{ textAlign: 'right' }}>
                     {ACTIONS.filter((a) => a.status !== b.status).map((a) => (
                       <button
                         key={a.status}

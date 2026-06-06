@@ -7,10 +7,10 @@ export function Footer({ content = BLOCK_DEFAULTS.contact }: { content?: Contact
         <div className="foot__grid">
           <div className="foot__brand">
             <div className="brand" style={{ marginBottom: '16px' }}>
-              <span className="brand__mark" style={{ color: 'var(--color-primary-light)' }}>
+              <span className="brand__mark">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" width="30" height="30"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
               </span>
-              <span className="brand__name" style={{ color: 'var(--cream)' }}>VERO<small>SALON · UNISEX</small></span>
+              <span className="brand__name">VERO<span aria-hidden="true" style={{ color: 'var(--accent)' }}>✦</span><small>SALON · UNISEX</small></span>
             </div>
             <p>{content.footerBlurb}</p>
           </div>

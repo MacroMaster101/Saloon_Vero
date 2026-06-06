@@ -98,6 +98,7 @@ body, .nav, .barber, .info-card, .book__card, .book__main,
 .nav__links a::after { content:""; position:absolute; left:0; right:100%; bottom:-2px; height:2px; background:var(--accent); transition:right .25s var(--ease); }
 .nav__links a:hover { color:var(--fg); }
 .nav__links a:hover::after { right:0; }
+.nav__auth { display:inline-flex; gap:14px; align-items:center; }
 .nav__burger { display:none; background:none; border:0; cursor:pointer; padding:8px; margin-left:auto; }
 .nav__burger span { display:block; width:24px; height:2px; background:var(--fg); margin:5px 0; border-radius:2px; }
 .pole { width:8px; border-radius:var(--radius-pill);
@@ -260,7 +261,7 @@ body, .nav, .barber, .info-card, .book__card, .book__main,
 
 /* rail mobile fallback */
 .rail--static .rail__pin { height:auto; position:static; padding:40px 0; }
-.rail--static .rail__track { overflow-x:auto; transform:none !important; scroll-snap-type:x mandatory; padding-bottom:16px; }
+.rail--static .rail__track { overflow-x:auto; transform:none !important; scroll-snap-type:x mandatory; padding-bottom:16px; max-width:100%; }
 .rail--static .dcard { scroll-snap-align:start; }
 
 /* ── How it works ────────────────────────────────────────── */
@@ -497,13 +498,12 @@ html.loader-done .loader-overlay { display:none !important; }
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width:980px) {
   .nav__links { display:none; }
-  .nav__burger { display:block; margin-left:8px; }
-  .nav__cta { display:none; }
+  .nav__cta--book { display:none; }
   .theme-toggle { margin-left:auto; }
   .stats { grid-template-columns:1fr 1fr; gap:30px 20px; }
   .how__grid { grid-template-columns:1fr; gap:30px; }
   .how__stick { position:static; }
-  .how__visual { max-width:380px; aspect-ratio:16/10; }
+  .how__visual { width:100%; max-width:380px; aspect-ratio:16/10; }
   .how__steps { padding:0; gap:38px; }
   .how__step { opacity:1; }
   .foot__grid { grid-template-columns:1fr 1fr; }
@@ -603,6 +603,7 @@ html.loader-done .loader-overlay { display:none !important; }
 /* ── Panels ── */
 .panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg);
   padding:24px; box-shadow:0 14px 40px -20px rgba(184,116,42,.16); }
+.account-panel { max-width:480px; }
 .panel h2 { font-size:18px; font-weight:700; margin:0 0 16px; color:var(--fg); }
 .panel--danger { border-color:color-mix(in srgb, var(--error) 45%, var(--line)); }
 .panel--danger h2 { color:var(--error); }
@@ -656,6 +657,7 @@ html.loader-done .loader-overlay { display:none !important; }
   text-transform:uppercase; letter-spacing:.04em; color:var(--fg-2); font-weight:700; }
 .data-table td { padding:12px 14px; border-top:1px solid var(--line); vertical-align:middle; color:var(--fg); }
 .data-table .ref { font-family:ui-monospace, monospace; font-size:12.5px; color:var(--fg-muted); }
+.data-table__actions { white-space:nowrap; }
 
 /* ── Booking / schedule cards ── */
 .bk-list { list-style:none; margin:0; padding:0; display:grid; gap:11px; }
@@ -689,8 +691,17 @@ html.loader-done .loader-overlay { display:none !important; }
 @media (max-width:860px) {
   .auth { grid-template-columns:1fr; min-height:0; margin:0; border-radius:0; border:0; }
   .auth__panel { display:none; }
-  .shell { grid-template-columns:1fr; margin:0; border-radius:0; }
-  .shell__side { border-right:0; border-bottom:1px solid var(--line); }
+  /* minmax(0,1fr) + min-width:0 stop the single column from growing past
+     the viewport when a child (tiles, booking cards) is intrinsically wide */
+  .shell { grid-template-columns:minmax(0,1fr); margin:0; border-radius:0; min-height:0; }
+  .shell__main { min-width:0; overflow:hidden; }
+  .shell__side { border-right:0; border-bottom:1px solid var(--line); padding:16px; }
+  .side__meta { display:none; }
+  /* back link sits top-right of the mobile header */
+  .side__back { align-self:flex-end; margin:0 0 6px; order:-1; }
+  .side__nav { flex-direction:row; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .side__nav a { flex:1 1 auto; justify-content:center; padding:8px 12px; font-size:13px; }
+  .side__foot { margin-top:12px; }
 }
 
 /* ===== ADMIN (redesign — direction B) ===== */
@@ -772,3 +783,388 @@ html.loader-done .loader-overlay { display:none !important; }
 .astatus--err { color:#c0392b; }
 .astatus--ok { color:var(--accent-text); }
 .athumb { width:72px; height:72px; object-fit:cover; border-radius:var(--radius-sm); border:1.5px solid var(--line); }
+
+/* ══ Admin mobile polish (≤640px) ═══════════════════════════
+   Tighter shell, and the 7-column bookings table becomes stacked
+   cards so it's usable on a phone instead of scrolling sideways. */
+@media (max-width:640px) {
+  .shell__main { padding:20px 16px; }
+  .ahead__title { font-size:24px; }
+
+  /* toolbar: full-width search on its own line, chips scroll under it */
+  .toolbar { gap:10px; align-items:stretch; }
+  .search { min-width:0; flex:1 1 100%; order:1; }
+  .chips {
+    order:2; flex:1 1 100%; flex-wrap:nowrap; overflow-x:auto;
+    gap:8px; padding-bottom:4px; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip { flex:none; }                 /* keep chips from squishing */
+  .toolbar .count { order:3; margin:0; }
+
+  /* data-table → cards */
+  .data-table, .data-table thead, .data-table tbody,
+  .data-table tr, .data-table td { display:block; width:100%; }
+  .data-table { border:0; background:transparent; overflow:visible; }
+  .data-table thead { position:absolute; left:-9999px; }   /* hide header row */
+  .data-table tr {
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:14px; padding:14px 16px; margin-bottom:11px;
+    box-shadow:0 10px 26px -22px rgba(184,116,42,.3);
+  }
+  .data-table td {
+    border:0; padding:5px 0; display:flex; justify-content:space-between;
+    align-items:baseline; gap:14px; text-align:right;
+  }
+  /* label each cell with its column name via data-label */
+  .data-table td::before {
+    content:attr(data-label); text-align:left; flex:none;
+    font-size:10.5px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--fg-muted);
+  }
+  .data-table td.ref { font-size:12px; }
+  .data-table__actions {
+    justify-content:flex-end; flex-wrap:wrap; text-align:right;
+    margin-top:8px; padding-top:10px; border-top:1px solid var(--line);
+  }
+  .data-table__actions::before { display:none; }
+  .data-table__actions .btn { margin:4px 0 0 6px; }
+}
+
+/* ══ Mobile bottom nav ══════════════════════════════════════ */
+.bottom-nav { display:none; }
+
+@media (max-width:780px) {
+  .bottom-nav {
+    position:fixed; left:0; right:0; bottom:0; z-index:70;
+    display:grid; grid-template-columns:1fr 1fr auto 1fr 1fr; align-items:end;
+    gap:4px; padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    box-shadow:0 -6px 24px rgba(46,37,25,.08);
+  }
+
+  /* place the 5 children: Home, Services, [Book FAB centered], Stylists, More */
+  .bottom-nav > :nth-child(1) { order:1; }  /* Home */
+  .bottom-nav > :nth-child(2) { order:2; }  /* Services */
+  .bottom-nav > :nth-child(3) { order:4; }  /* Stylists */
+  .bottom-nav > :nth-child(4) { order:3; }  /* Book FAB -> center column */
+  .bottom-nav > :nth-child(5) { order:5; }  /* More */
+
+  .bottom-nav__tab {
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:none; border:0; cursor:pointer; padding:6px 0;
+    color:var(--fg-muted); font:inherit; text-decoration:none;
+  }
+  .bottom-nav__label { font-size:10.5px; font-weight:600; letter-spacing:.02em; }
+  .bottom-nav__tab.is-active { color:var(--accent-text); }
+  .bottom-nav__tab.is-active .bottom-nav__icon { color:var(--accent); }
+
+  .bottom-nav__fab {
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    margin-top:-26px; padding:0; text-decoration:none;
+  }
+  .bottom-nav__fab .bottom-nav__icon {
+    width:56px; height:56px; border-radius:50%;
+    display:grid; place-items:center; color:#fff;
+    background:linear-gradient(160deg, var(--accent), var(--accent-dark));
+    box-shadow:0 10px 24px -6px color-mix(in srgb, var(--accent) 60%, transparent);
+    border:3px solid var(--bg);
+  }
+  .bottom-nav__fab-label { font-size:10.5px; font-weight:700; color:var(--accent-text); }
+  .bottom-nav__fab.is-active .bottom-nav__icon { transform:scale(1.04); }
+}
+
+/* ══ Admin/staff bottom nav (mirrors public one, no FAB) ════
+   Shell collapses at 860px, so the bar appears there too. */
+.bottom-nav--admin { display:none; }
+
+@media (max-width:860px) {
+  .bottom-nav--admin {
+    position:fixed; left:0; right:0; bottom:0; z-index:70;
+    display:grid; align-items:center;          /* columns set inline per item count */
+    gap:2px; padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+    background:color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    box-shadow:0 -6px 24px rgba(46,37,25,.08);
+  }
+  /* no FAB reordering here — keep natural DOM order */
+  .bottom-nav--admin > * { order:0; min-width:0; }   /* min-width:0 lets tabs shrink */
+  /* the shared tab styles need to apply at this breakpoint too */
+  .bottom-nav--admin .bottom-nav__tab {
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:none; border:0; cursor:pointer; padding:7px 2px;
+    color:var(--fg-muted); font:inherit; text-decoration:none;
+    min-width:0; overflow:hidden;
+  }
+  .bottom-nav--admin .bottom-nav__label {
+    font-size:10px; font-weight:600; letter-spacing:0;
+    max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .bottom-nav--admin .bottom-nav__tab.is-active { color:var(--accent-text); }
+  .bottom-nav--admin .bottom-nav__tab.is-active .bottom-nav__icon { color:var(--accent); }
+
+  /* replace the in-shell nav: hide sidebar links + sign-out on mobile
+     (admin/staff only — the account page keeps its own tabs) */
+  .shell--admin .side__nav,
+  .shell--admin .side__foot { display:none; }
+  /* clear the fixed bar so content isn't hidden behind it */
+  .shell--admin .shell__main { padding-bottom:calc(74px + env(safe-area-inset-bottom)); }
+  /* the sheet must clear the bar too (the more-sheet panel sits above it) */
+  .more-sheet--admin .more-sheet__panel { padding-bottom:calc(82px + env(safe-area-inset-bottom)); }
+}
+
+/* ══ Mobile "More" bottom sheet ═════════════════════════════
+   Gated at 860px so the admin sheet works across the full range
+   (the public More button only exists ≤780px, so this is harmless
+   for the public site). */
+.more-sheet { display:none; }
+
+@media (max-width:860px) {
+  .more-sheet {
+    display:block; position:fixed; inset:0; z-index:75;
+    background:rgba(0,0,0,.42);
+    opacity:0; pointer-events:none; transition:opacity .25s var(--ease);
+  }
+  .more-sheet.open { opacity:1; pointer-events:auto; }
+  .more-sheet__panel {
+    position:absolute; left:0; right:0; bottom:0;
+    background:var(--surface); color:var(--fg);
+    border-radius:20px 20px 0 0;
+    padding:14px 22px calc(24px + env(safe-area-inset-bottom));
+    transform:translateY(100%); transition:transform .28s var(--ease);
+    box-shadow:0 -10px 40px rgba(46,37,25,.18);
+  }
+  .more-sheet.open .more-sheet__panel { transform:translateY(0); }
+  .more-sheet__grip {
+    width:42px; height:4px; border-radius:4px; background:var(--line);
+    margin:2px auto 14px;
+  }
+  .more-sheet__links { display:flex; flex-direction:column; }
+  .more-sheet__links a {
+    font-size:20px; font-weight:700; color:var(--fg);
+    padding:14px 0; border-bottom:1px solid var(--line);
+  }
+  .more-sheet__row {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:18px; font-size:14px; font-weight:600; color:var(--fg-2);
+  }
+}
+
+/* ══ Mobile slim top bar ════════════════════════════════════ */
+@media (max-width:780px) {
+  .nav__inner { gap:12px; height:64px; }
+  .brand__name { font-size:17px; }
+  /* push auth right — the theme toggle that used to do this is now hidden.
+     Covers both states: logged-in (.nav__auth) and logged-out (Sign in = .nav__cta) */
+  .nav__auth, .nav .nav__cta { margin-left:auto; }
+  .nav__auth { gap:8px; }
+  .nav__auth .btn { padding:8px 12px; font-size:13px; }
+  /* theme toggle lives in the More sheet on mobile, not the header */
+  .nav .theme-toggle { display:none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE POLISH LAYER  (≤780px)
+   Natural section heights + consistent vertical rhythm.
+   No forced 100svh — that created dead space. Content flows and
+   each section is tuned to feel designed on a small screen.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width:780px) {
+  /* ── consistent vertical rhythm ── */
+  .wrap { padding:0 20px; }
+  .section { padding:56px 0; }
+  .section.story, .section.visit { padding:60px 0; }
+  .sec-head { margin-bottom:30px; }
+  .h-section { font-size:clamp(30px,9vw,40px); }
+  .lead { font-size:15.5px; }
+  .eyebrow { font-size:11px; }
+
+  /* hero stays impactful but never empty */
+  .ehero { padding:28px 0 48px; }
+  .ehero__grid { min-height:0; gap:28px; }
+  .ehero__display { font-size:clamp(40px,12vw,60px); margin-top:14px; }
+  .ehero__lead { font-size:15.5px; margin-top:20px; }
+  .ehero__actions { flex-direction:column; align-items:flex-start; gap:16px; margin-top:26px; }
+  .ehero__actions .btn { width:100%; }
+  .ehero__facts { gap:18px; margin-top:30px; padding-top:20px; flex-wrap:wrap; }
+  .ehero__frame { aspect-ratio:4/3; }
+
+  /* page clears the fixed bottom nav */
+  body { padding-bottom:calc(72px + env(safe-area-inset-bottom)); }
+  .foot { padding-bottom:32px; }
+
+  /* ── Stats: 2×2 with real presence (was cramped at top) ── */
+  .stats { grid-template-columns:1fr 1fr; gap:12px; }
+  .stat-card { padding:20px 14px; }
+  .stat-card b { font-size:clamp(34px,11vw,46px); }
+  .stat-card span { font-size:11px; letter-spacing:.14em; margin-top:8px; }
+
+  /* ── Services price list: single column, room to scan ── */
+  .menu { grid-template-columns:1fr; gap:30px; }
+  .menu__col h3 { font-size:13px; margin-bottom:4px; }
+  .price-row { padding:15px 4px; grid-template-columns:1fr auto; }
+  .price-row:hover { padding-left:4px; background:transparent; }
+  .price-row .name { font-size:15.5px; }
+  .price-row .price { font-size:17px; }
+  .price-row .desc { font-size:13px; margin-top:3px; }
+
+  /* ── Lookbook: give the card real size ── */
+  .rail__head { padding:0 0 24px; }
+  .rail--static .rail__pin { padding:0; }
+  .rail--static .rail__track { padding:0 20px 14px; gap:16px; }
+  .dcard { width:80vw; max-width:340px; }
+  .dcard .img-slot { aspect-ratio:4/5; }
+  .dcard__name { font-size:24px; }
+  .rail__hint { padding:0 20px; margin-top:18px; font-size:11px; }
+
+  /* ── How it works: clean stacked steps ── */
+  .how__visual { max-width:100%; aspect-ratio:4/3; }
+  .how__steps { padding:6px 0 0; gap:26px; }
+  .how__step h3 { font-size:22px; }
+  .how__step p { font-size:15px; }
+
+  /* ── Team: 2-up cards ── */
+  .team { grid-template-columns:1fr 1fr; gap:14px; }
+  .barber__body { padding:14px 14px 16px; }
+  .barber__body h4 { font-size:16.5px; }
+  .barber__role { font-size:11.5px; }
+  .barber__tags { gap:5px; margin-top:10px; }
+  .tag { font-size:10px; padding:4px 8px; }
+
+  /* ── Story: stacked, tidy stats ── */
+  .story__grid { gap:30px; }
+  .story__art { max-width:100%; }
+  .story p { font-size:15.5px; }
+  .story__sign { font-size:26px; }
+  .story__stats { gap:26px; margin-top:28px; }
+  .story__stats .stat b { font-size:28px; }
+
+  /* ── Quote: tighter, not floating ── */
+  .quote blockquote { font-size:clamp(24px,7vw,32px); max-width:16ch; }
+
+  /* ── CTA: bold but compact ── */
+  .cta__title { font-size:clamp(40px,13vw,60px); }
+  .cta__sub { font-size:16px; margin-top:16px; }
+  .cta__actions { flex-direction:column; margin-top:26px; gap:10px; }
+  .cta__actions .btn { width:100%; }
+
+  /* ── Visit: stacked, readable map ── */
+  .visit__grid { gap:26px; }
+  .map, .map .img-slot { min-height:240px; }
+  .contact-row { gap:10px; }
+  .info-card { min-width:0; flex:1 1 calc(50% - 5px); }
+  .hours li { padding:12px 0; font-size:14.5px; }
+
+  /* ── Footer: stacked, friendly ── */
+  .foot__grid { grid-template-columns:1fr 1fr; gap:28px 20px; padding-top:48px; }
+  .foot__brand { grid-column:1 / -1; }
+  .foot p { max-width:40ch; }
+  .foot__bottom { flex-direction:column; gap:8px; margin-top:36px; text-align:left; }
+
+  /* ── Booking wizard: full-width, finger-friendly ── */
+  .book__card { grid-template-columns:1fr; }
+  .book__aside { order:-1; border-left:0; border-bottom:1px solid var(--line); }
+  .book__main, .book__aside { padding:22px 18px; }
+  .steps { gap:6px; margin-bottom:24px; }
+  .steps__label { font-size:9.5px; letter-spacing:.04em; }
+  .choices--2 { grid-template-columns:1fr; }
+  .slots { grid-template-columns:repeat(3,1fr); gap:8px; }
+  .date-chip { width:58px; }
+  .fields-2 { grid-template-columns:1fr; gap:0; }
+  .book__nav { gap:10px; }
+  .book__nav .btn { padding:13px 18px; font-size:14px; }
+}
+
+/* ── very small phones ── */
+@media (max-width:380px) {
+  .stats { grid-template-columns:1fr 1fr; }
+  .team { grid-template-columns:1fr; }
+  .slots { grid-template-columns:repeat(3,1fr); }
+}
+
+/* ══ Mobile overflow & safe-area cleanup ════════════════════ */
+html, body { overflow-x:hidden; }
+
+@media (max-width:780px) {
+  /* decorative elements that can poke past the viewport edge */
+  .story__art .pole { right:-4px; }
+  .splinehero__orb { max-width:90vw; }
+
+  /* top bar respects the notch */
+  .nav { padding-top:env(safe-area-inset-top); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ADMIN / STAFF / ACCOUNT — mobile CRUD card restyle (≤640px)
+   Every list row becomes a clean, full-width card with stacked,
+   finger-friendly controls. Forms (.acard) already stack; here we
+   fix the flex-row rows that crammed controls side by side.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width:640px) {
+  /* page header: title + action stack instead of squeezing */
+  .ahead { flex-direction:column; align-items:flex-start; gap:10px; margin-bottom:18px; }
+  .ahead .btn { width:100%; }
+
+  /* forms span full width on mobile (drop the 480px cap) */
+  .acard { max-width:none; padding:18px 16px; }
+  .atwo { grid-template-columns:1fr; gap:0; }
+  .acard .btn, .acard .btn--primary { width:100%; }
+  .aseg { flex-wrap:wrap; }
+  /* 16px inputs avoid iOS auto-zoom on focus */
+  .ainput, .atextarea, .person__edit select, .search input { font-size:16px; }
+
+  /* generic list rows already block-stack; give them room + tap targets */
+  .arow { padding:16px; }
+  .arow__head { flex-direction:column; align-items:flex-start; gap:4px; }
+  .arow .btn { width:100%; }
+  .arow form { margin-top:10px; }
+
+  /* the Edit toggle: make it a clear full-width pill button, not a tiny link */
+  .arow__edit summary {
+    display:block; margin-top:12px; text-align:center; font-weight:700; font-size:14px;
+    color:var(--fg); background:var(--bg-2); border:1.5px solid var(--line);
+    border-radius:var(--radius-pill); padding:11px 16px;
+  }
+  .arow__edit[open] summary { margin-bottom:4px; border-color:var(--accent); color:var(--accent-text); }
+  /* edit form fields full-width and spaced; Hair/Beauty toggle side-by-side */
+  .arow__edit .aseg { flex-wrap:nowrap; }
+  .arow__edit .aseg label { flex:1; }
+  /* tidy gap between Edit block and the Delete form */
+  .arow .arow__edit + form { margin-top:12px; }
+
+  /* split row (blocked slots): info on top, action full-width below */
+  .arow--split { display:flex; flex-direction:column; align-items:stretch; gap:12px; }
+  .arow--split .arow__main { display:grid; gap:4px; }
+  .arow--split .btn { width:100%; }
+
+  /* People: identity on top, controls stacked & full-width */
+  .person { flex-direction:column; align-items:stretch; gap:12px; padding:16px; }
+  .person__id { display:flex; align-items:center; gap:12px; }
+  .person__edit { display:grid; gap:10px; margin:0; }
+  .person__edit select { width:100%; padding:11px 12px; font-size:14px; }
+  .person__edit .btn { width:100%; }
+  .person__del .btn { width:100%; }
+
+  /* Schedule booking cards: time + info row, status & ref wrap under */
+  .bk-card { flex-wrap:wrap; gap:10px 12px; padding:14px; }
+  .bk-card__info { flex:1 1 auto; min-width:0; }
+  .bk-card__when { margin-left:0; flex-basis:100%; text-align:left; }
+  .bk-card .tag { margin-left:auto; }
+
+  /* Account: tabs become a tidy horizontal pill row at top */
+  .shell:not(.shell--admin) .side__nav { gap:8px; }
+  .shell:not(.shell--admin) .side__nav a { flex:1 1 auto; justify-content:center; }
+
+  /* image upload field: larger square preview */
+  .athumb { width:96px; height:96px; }
+
+  /* account content panels go full-width and stack their actions */
+  .panel, .account-panel { max-width:none; padding:20px 16px; }
+  .panel .btn { width:100%; }
+  .panel .field input { font-size:16px; }   /* 16px avoids iOS zoom-on-focus */
+  .account-bookings, .bk-list { max-width:none !important; }
+}

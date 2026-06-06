@@ -31,8 +31,8 @@ export default async function BlockedSlotsPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-        <h1 className="h-section" style={{ fontSize: 32 }}>Blocked slots</h1>
+      <div className="ahead">
+        <h1 className="ahead__title">Blocked slots</h1>
         <a href="/admin" className="btn btn--ghost">Back to dashboard</a>
       </div>
       <p className="lead" style={{ marginTop: 12 }}>
@@ -46,27 +46,15 @@ export default async function BlockedSlotsPage() {
         {rows.length === 0 ? (
           <p className="lead">No upcoming blocks.</p>
         ) : (
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 12 }}>
+          <ul className="alist">
             {rows.map((b) => (
-              <li
-                key={b.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: 16,
-                  padding: '14px 16px',
-                  borderRadius: 12,
-                  border: '1.5px solid var(--line)',
-                  background: 'var(--bg-2)',
-                }}
-              >
-                <div style={{ display: 'grid', gap: 4 }}>
-                  <b style={{ fontSize: 15 }}>{b.stylists?.name ?? 'Whole salon'}</b>
-                  <span style={{ fontSize: 14, color: 'var(--muted)' }}>
+              <li key={b.id} className="arow arow--split">
+                <div className="arow__main">
+                  <b className="arow__name">{b.stylists?.name ?? 'Whole salon'}</b>
+                  <span className="arow__meta">
                     {whenFmt.format(new Date(b.starts_at))} – {whenFmt.format(new Date(b.ends_at))}
                   </span>
-                  {b.reason && <span style={{ fontSize: 13, color: 'var(--muted)' }}>{b.reason}</span>}
+                  {b.reason && <span className="arow__meta">{b.reason}</span>}
                 </div>
                 <form action={deleteBlock}>
                   <input type="hidden" name="id" value={b.id} />

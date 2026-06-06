@@ -25,9 +25,11 @@ export function PeopleList({ people, stylists }: { people: Person[]; stylists: S
             const initial = (p.full_name || p.email || '?').trim().charAt(0).toUpperCase();
             return (
               <li key={p.id} className="person">
-                <span className="avatar" style={{ width: 38, height: 38 }}><b style={{ fontSize: 14 }}>{initial}</b></span>
-                <div><b style={{ fontSize: 14 }}>{p.full_name ?? '—'}</b><div className="step__hint" style={{ margin: 0 }}>{p.email}</div></div>
-                <form action={setRole} style={{ display: 'flex', gap: 10, alignItems: 'center', marginLeft: 'auto', flexWrap: 'wrap' }}>
+                <div className="person__id">
+                  <span className="avatar" style={{ width: 38, height: 38 }}><b style={{ fontSize: 14 }}>{initial}</b></span>
+                  <div><b style={{ fontSize: 14 }}>{p.full_name ?? '—'}</b><div className="step__hint" style={{ margin: 0 }}>{p.email}</div></div>
+                </div>
+                <form action={setRole} className="person__edit">
                   <input type="hidden" name="id" value={p.id} />
                   <select name="role" defaultValue={p.role} aria-label="Role">
                     <option value="user">user</option><option value="staff">staff</option><option value="admin">admin</option>
@@ -38,7 +40,7 @@ export function PeopleList({ people, stylists }: { people: Person[]; stylists: S
                   </select>
                   <button className="btn btn--primary" type="submit">Save</button>
                 </form>
-                <form action={adminDeleteUser}>
+                <form action={adminDeleteUser} className="person__del">
                   <input type="hidden" name="id" value={p.id} />
                   <button type="submit" className="btn btn--danger-outline">Delete</button>
                 </form>

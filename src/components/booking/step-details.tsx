@@ -15,8 +15,8 @@ export interface StepDetailsHandle {
 
 export const StepDetails = forwardRef<
   StepDetailsHandle,
-  { onValidityChange?: (valid: boolean) => void }
->(function StepDetails({ onValidityChange }, ref) {
+  { onValidityChange?: (valid: boolean) => void; active?: boolean }
+>(function StepDetails({ onValidityChange, active = true }, ref) {
   const {
     register,
     trigger,
@@ -54,6 +54,7 @@ export const StepDetails = forwardRef<
             placeholder="e.g. Nimal Perera"
             autoComplete="name"
             className={errors.name ? 'err' : ''}
+            disabled={!active}
             {...register('name')}
           />
           <div className="msg">{errors.name?.message ?? 'Please enter your name.'}</div>
@@ -66,6 +67,7 @@ export const StepDetails = forwardRef<
             placeholder="077 369 9620"
             autoComplete="tel"
             className={errors.phone ? 'err' : ''}
+            disabled={!active}
             {...register('phone')}
           />
           <div className="msg">{errors.phone?.message ?? 'Enter a valid phone number.'}</div>
@@ -84,6 +86,7 @@ export const StepDetails = forwardRef<
           placeholder="you@email.com"
           autoComplete="email"
           className={errors.email ? 'err' : ''}
+          disabled={!active}
           {...register('email')}
         />
         <div className="msg">{errors.email?.message ?? "That email doesn't look right."}</div>
@@ -99,6 +102,7 @@ export const StepDetails = forwardRef<
           id="i-notes"
           rows={2}
           placeholder="Shoulder length, keep the layers, a warm brown…"
+          disabled={!active}
           {...register('notes')}
         />
       </div>
