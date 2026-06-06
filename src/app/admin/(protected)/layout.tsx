@@ -40,7 +40,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
   const initial = (profile.fullName || profile.email || '?').trim().charAt(0).toUpperCase();
 
   return (
-    <div className="shell">
+    <div className="shell shell--admin">
       <aside className="shell__side">
         <a href="/" className="side__back"><Icon name="arrowLeft" className="ic" /> Back to site</a>
         <div className="side__brand"><span className="pole" style={{ height: 26 }} /> Vero Salon

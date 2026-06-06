@@ -887,11 +887,12 @@ html.loader-done .loader-overlay { display:none !important; }
   .bottom-nav--admin .bottom-nav__tab.is-active { color:var(--accent-text); }
   .bottom-nav--admin .bottom-nav__tab.is-active .bottom-nav__icon { color:var(--accent); }
 
-  /* replace the in-shell nav: hide sidebar links + sign-out on mobile */
-  .shell .side__nav,
-  .shell .side__foot { display:none; }
+  /* replace the in-shell nav: hide sidebar links + sign-out on mobile
+     (admin/staff only — the account page keeps its own tabs) */
+  .shell--admin .side__nav,
+  .shell--admin .side__foot { display:none; }
   /* clear the fixed bar so content isn't hidden behind it */
-  .shell__main { padding-bottom:calc(74px + env(safe-area-inset-bottom)); }
+  .shell--admin .shell__main { padding-bottom:calc(74px + env(safe-area-inset-bottom)); }
   /* the sheet must clear the bar too (the more-sheet panel sits above it) */
   .more-sheet--admin .more-sheet__panel { padding-bottom:calc(82px + env(safe-area-inset-bottom)); }
 }
@@ -1070,4 +1071,62 @@ html, body { overflow-x:hidden; }
 
   /* top bar respects the notch */
   .nav { padding-top:env(safe-area-inset-top); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ADMIN / STAFF / ACCOUNT — mobile CRUD card restyle (≤640px)
+   Every list row becomes a clean, full-width card with stacked,
+   finger-friendly controls. Forms (.acard) already stack; here we
+   fix the flex-row rows that crammed controls side by side.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width:640px) {
+  /* page header: title + action stack instead of squeezing */
+  .ahead { flex-direction:column; align-items:flex-start; gap:10px; margin-bottom:18px; }
+  .ahead .btn { width:100%; }
+
+  /* forms span full width on mobile (drop the 480px cap) */
+  .acard { max-width:none; padding:18px 16px; }
+  .atwo { grid-template-columns:1fr; gap:0; }
+  .acard .btn, .acard .btn--primary { width:100%; }
+  .aseg { flex-wrap:wrap; }
+  /* 16px inputs avoid iOS auto-zoom on focus */
+  .ainput, .atextarea, .person__edit select, .search input { font-size:16px; }
+
+  /* generic list rows already block-stack; give them room + tap targets */
+  .arow { padding:16px; }
+  .arow__head { flex-direction:column; align-items:flex-start; gap:4px; }
+  .arow .btn { width:100%; }
+  .arow form { margin-top:10px; }
+
+  /* split row (blocked slots): info on top, action full-width below */
+  .arow--split { display:flex; flex-direction:column; align-items:stretch; gap:12px; }
+  .arow--split .arow__main { display:grid; gap:4px; }
+  .arow--split .btn { width:100%; }
+
+  /* People: identity on top, controls stacked & full-width */
+  .person { flex-direction:column; align-items:stretch; gap:12px; padding:16px; }
+  .person__id { display:flex; align-items:center; gap:12px; }
+  .person__edit { display:grid; gap:10px; margin:0; }
+  .person__edit select { width:100%; padding:11px 12px; font-size:14px; }
+  .person__edit .btn { width:100%; }
+  .person__del .btn { width:100%; }
+
+  /* Schedule booking cards: time + info row, status & ref wrap under */
+  .bk-card { flex-wrap:wrap; gap:10px 12px; padding:14px; }
+  .bk-card__info { flex:1 1 auto; min-width:0; }
+  .bk-card__when { margin-left:0; flex-basis:100%; text-align:left; }
+  .bk-card .tag { margin-left:auto; }
+
+  /* Account: tabs become a tidy horizontal pill row at top */
+  .shell:not(.shell--admin) .side__nav { gap:8px; }
+  .shell:not(.shell--admin) .side__nav a { flex:1 1 auto; justify-content:center; }
+
+  /* image upload field: larger square preview */
+  .athumb { width:96px; height:96px; }
+
+  /* account content panels go full-width and stack their actions */
+  .panel { max-width:none; padding:20px 16px; }
+  .panel .btn { width:100%; }
+  .panel .field input { font-size:16px; }   /* 16px avoids iOS zoom-on-focus */
+  .account-bookings, .bk-list { max-width:none !important; }
 }
