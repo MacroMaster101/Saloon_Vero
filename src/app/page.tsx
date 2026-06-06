@@ -14,6 +14,7 @@ import { Quote } from '@/components/site/quote';
 import { Visit } from '@/components/site/visit';
 import { Cta } from '@/components/site/cta';
 import { Footer } from '@/components/site/footer';
+import { BottomNav } from '@/components/site/bottom-nav';
 import { BookingWizard } from '@/components/booking/booking-wizard';
 import { LoadingScreen } from '@/components/site/loading-screen';
 import { getGallery, getBookableServices, getStylists } from '@/lib/queries';
@@ -73,6 +74,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
         <Cta content={cta} />
       </main>
       <Footer content={contact} />
+      <BottomNav />
     </>
   );
 }
