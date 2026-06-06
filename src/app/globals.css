@@ -864,24 +864,20 @@ html.loader-done .loader-overlay { display:none !important; }
   .nav__auth .btn { padding:8px 12px; font-size:13px; }
 }
 
-/* ══ Mobile full-height sections + scroll-snap ══════════════ */
+/* ══ Mobile full-height sections (snap removed — conflicts with Lenis) ══ */
 @media (max-width:780px) {
-  html { scroll-snap-type:y proximity; }
-
   .ehero,
   .section:not(.booking) {
     min-height:100svh;
-    scroll-snap-align:start;
     display:flex; flex-direction:column; justify-content:safe center;
   }
 
-  /* tall/short sections opt out of forced full-height + snap */
-  .section.booking { min-height:0; scroll-snap-align:none; }
+  /* booking opts out of forced full-height */
+  .section.booking { min-height:0; }
 
   /* keep the footer fully visible above the fixed bottom nav */
   .foot {
     padding-bottom:calc(96px + env(safe-area-inset-bottom));
-    scroll-snap-align:none;
   }
 }
 
