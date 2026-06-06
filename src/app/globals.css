@@ -864,21 +864,123 @@ html.loader-done .loader-overlay { display:none !important; }
   .nav__auth .btn { padding:8px 12px; font-size:13px; }
 }
 
-/* ══ Mobile full-height sections (snap removed — conflicts with Lenis) ══ */
+/* ══════════════════════════════════════════════════════════════
+   MOBILE POLISH LAYER  (≤780px)
+   Natural section heights + consistent vertical rhythm.
+   No forced 100svh — that created dead space. Content flows and
+   each section is tuned to feel designed on a small screen.
+   ══════════════════════════════════════════════════════════════ */
 @media (max-width:780px) {
-  .ehero,
-  .section:not(.booking) {
-    min-height:100svh;
-    display:flex; flex-direction:column; justify-content:safe center;
-  }
+  /* ── consistent vertical rhythm ── */
+  .wrap { padding:0 20px; }
+  .section { padding:56px 0; }
+  .section.story, .section.visit { padding:60px 0; }
+  .sec-head { margin-bottom:30px; }
+  .h-section { font-size:clamp(30px,9vw,40px); }
+  .lead { font-size:15.5px; }
+  .eyebrow { font-size:11px; }
 
-  /* booking opts out of forced full-height */
-  .section.booking { min-height:0; }
+  /* hero stays impactful but never empty */
+  .ehero { padding:28px 0 48px; }
+  .ehero__grid { min-height:0; gap:28px; }
+  .ehero__display { font-size:clamp(40px,12vw,60px); margin-top:14px; }
+  .ehero__lead { font-size:15.5px; margin-top:20px; }
+  .ehero__actions { flex-direction:column; align-items:flex-start; gap:16px; margin-top:26px; }
+  .ehero__actions .btn { width:100%; }
+  .ehero__facts { gap:18px; margin-top:30px; padding-top:20px; flex-wrap:wrap; }
+  .ehero__frame { aspect-ratio:4/3; }
 
-  /* keep the footer fully visible above the fixed bottom nav */
-  .foot {
-    padding-bottom:calc(96px + env(safe-area-inset-bottom));
-  }
+  /* page clears the fixed bottom nav */
+  body { padding-bottom:calc(72px + env(safe-area-inset-bottom)); }
+  .foot { padding-bottom:32px; }
+
+  /* ── Stats: 2×2 with real presence (was cramped at top) ── */
+  .stats { grid-template-columns:1fr 1fr; gap:12px; }
+  .stat-card { padding:20px 14px; }
+  .stat-card b { font-size:clamp(34px,11vw,46px); }
+  .stat-card span { font-size:11px; letter-spacing:.14em; margin-top:8px; }
+
+  /* ── Services price list: single column, room to scan ── */
+  .menu { grid-template-columns:1fr; gap:30px; }
+  .menu__col h3 { font-size:13px; margin-bottom:4px; }
+  .price-row { padding:15px 4px; grid-template-columns:1fr auto; }
+  .price-row:hover { padding-left:4px; background:transparent; }
+  .price-row .name { font-size:15.5px; }
+  .price-row .price { font-size:17px; }
+  .price-row .desc { font-size:13px; margin-top:3px; }
+
+  /* ── Lookbook: give the card real size ── */
+  .rail__head { padding:0 0 24px; }
+  .rail--static .rail__pin { padding:0; }
+  .rail--static .rail__track { padding:0 20px 14px; gap:16px; }
+  .dcard { width:80vw; max-width:340px; }
+  .dcard .img-slot { aspect-ratio:4/5; }
+  .dcard__name { font-size:24px; }
+  .rail__hint { padding:0 20px; margin-top:18px; font-size:11px; }
+
+  /* ── How it works: clean stacked steps ── */
+  .how__visual { max-width:100%; aspect-ratio:4/3; }
+  .how__steps { padding:6px 0 0; gap:26px; }
+  .how__step h3 { font-size:22px; }
+  .how__step p { font-size:15px; }
+
+  /* ── Team: 2-up cards ── */
+  .team { grid-template-columns:1fr 1fr; gap:14px; }
+  .barber__body { padding:14px 14px 16px; }
+  .barber__body h4 { font-size:16.5px; }
+  .barber__role { font-size:11.5px; }
+  .barber__tags { gap:5px; margin-top:10px; }
+  .tag { font-size:10px; padding:4px 8px; }
+
+  /* ── Story: stacked, tidy stats ── */
+  .story__grid { gap:30px; }
+  .story__art { max-width:100%; }
+  .story p { font-size:15.5px; }
+  .story__sign { font-size:26px; }
+  .story__stats { gap:26px; margin-top:28px; }
+  .story__stats .stat b { font-size:28px; }
+
+  /* ── Quote: tighter, not floating ── */
+  .quote blockquote { font-size:clamp(24px,7vw,32px); max-width:16ch; }
+
+  /* ── CTA: bold but compact ── */
+  .cta__title { font-size:clamp(40px,13vw,60px); }
+  .cta__sub { font-size:16px; margin-top:16px; }
+  .cta__actions { flex-direction:column; margin-top:26px; gap:10px; }
+  .cta__actions .btn { width:100%; }
+
+  /* ── Visit: stacked, readable map ── */
+  .visit__grid { gap:26px; }
+  .map, .map .img-slot { min-height:240px; }
+  .contact-row { gap:10px; }
+  .info-card { min-width:0; flex:1 1 calc(50% - 5px); }
+  .hours li { padding:12px 0; font-size:14.5px; }
+
+  /* ── Footer: stacked, friendly ── */
+  .foot__grid { grid-template-columns:1fr 1fr; gap:28px 20px; padding-top:48px; }
+  .foot__brand { grid-column:1 / -1; }
+  .foot p { max-width:40ch; }
+  .foot__bottom { flex-direction:column; gap:8px; margin-top:36px; text-align:left; }
+
+  /* ── Booking wizard: full-width, finger-friendly ── */
+  .book__card { grid-template-columns:1fr; }
+  .book__aside { order:-1; border-left:0; border-bottom:1px solid var(--line); }
+  .book__main, .book__aside { padding:22px 18px; }
+  .steps { gap:6px; margin-bottom:24px; }
+  .steps__label { font-size:9.5px; letter-spacing:.04em; }
+  .choices--2 { grid-template-columns:1fr; }
+  .slots { grid-template-columns:repeat(3,1fr); gap:8px; }
+  .date-chip { width:58px; }
+  .fields-2 { grid-template-columns:1fr; gap:0; }
+  .book__nav { gap:10px; }
+  .book__nav .btn { padding:13px 18px; font-size:14px; }
+}
+
+/* ── very small phones ── */
+@media (max-width:380px) {
+  .stats { grid-template-columns:1fr 1fr; }
+  .team { grid-template-columns:1fr; }
+  .slots { grid-template-columns:repeat(3,1fr); }
 }
 
 /* ══ Mobile overflow & safe-area cleanup ════════════════════ */
