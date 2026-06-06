@@ -882,21 +882,25 @@ html.loader-done .loader-overlay { display:none !important; }
   .bottom-nav--admin {
     position:fixed; left:0; right:0; bottom:0; z-index:70;
     display:grid; align-items:center;          /* columns set inline per item count */
-    gap:4px; padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+    gap:2px; padding:8px 4px calc(8px + env(safe-area-inset-bottom));
     background:color-mix(in srgb, var(--bg) 92%, transparent);
     backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
     border-top:1px solid var(--line);
     box-shadow:0 -6px 24px rgba(46,37,25,.08);
   }
   /* no FAB reordering here — keep natural DOM order */
-  .bottom-nav--admin > * { order:0; }
+  .bottom-nav--admin > * { order:0; min-width:0; }   /* min-width:0 lets tabs shrink */
   /* the shared tab styles need to apply at this breakpoint too */
   .bottom-nav--admin .bottom-nav__tab {
     display:flex; flex-direction:column; align-items:center; gap:4px;
-    background:none; border:0; cursor:pointer; padding:7px 0;
+    background:none; border:0; cursor:pointer; padding:7px 2px;
     color:var(--fg-muted); font:inherit; text-decoration:none;
+    min-width:0; overflow:hidden;
   }
-  .bottom-nav--admin .bottom-nav__label { font-size:10px; font-weight:600; letter-spacing:.01em; }
+  .bottom-nav--admin .bottom-nav__label {
+    font-size:10px; font-weight:600; letter-spacing:0;
+    max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
   .bottom-nav--admin .bottom-nav__tab.is-active { color:var(--accent-text); }
   .bottom-nav--admin .bottom-nav__tab.is-active .bottom-nav__icon { color:var(--accent); }
 

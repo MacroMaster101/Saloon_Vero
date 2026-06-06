@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { signOut } from '../actions';
 
-export type AdminNavItem = { href: string; label: string; icon: IconName };
+export type AdminNavItem = { href: string; label: string; icon: IconName; short?: string };
 
 /**
  * App-style bottom navigation for admin/staff on mobile (mirrors the public
@@ -72,7 +72,7 @@ export function AdminBottomNav({
             className={`bottom-nav__tab${isActive(i.href) ? ' is-active' : ''}`}
           >
             <span className="bottom-nav__icon"><Icon name={i.icon} className="ic-lg" /></span>
-            <span className="bottom-nav__label">{i.label}</span>
+            <span className="bottom-nav__label">{i.short ?? i.label}</span>
           </Link>
         ))}
         <button

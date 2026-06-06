@@ -20,10 +20,10 @@ const STAFF_NAV: { href: string; label: string; icon: IconName }[] = [
 
 // Mobile bottom-nav split: up to 5 primary tabs in the bar, the rest go to "More".
 const ADMIN_PRIMARY: AdminNavItem[] = [
-  { href: '/admin', label: 'Dashboard', icon: 'grid' },
+  { href: '/admin', label: 'Dashboard', short: 'Home', icon: 'grid' },
   { href: '/admin/people', label: 'People', icon: 'people' },
-  { href: '/admin/services', label: 'Services', icon: 'scissors' },
-  { href: '/admin/schedule', label: 'Schedule', icon: 'calendar' },
+  { href: '/admin/services', label: 'Services', short: 'Serv', icon: 'scissors' },
+  { href: '/admin/schedule', label: 'Schedule', short: 'Sched', icon: 'calendar' },
 ];
 const ADMIN_OVERFLOW: AdminNavItem[] = [
   { href: '/admin/stylists', label: 'Stylists', icon: 'user' },
