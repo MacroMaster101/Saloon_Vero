@@ -53,7 +53,13 @@ function EditRow({ s }: { s: Stylist }) {
             <input type="hidden" name="id" value={s.id} />
             <StylistFields s={s} />
             <FormStatus state={state} />
-            <SubmitButton pending={pending} />
+            <div className="aform__foot">
+              <SubmitButton pending={pending} />
+              <button type="button" className="btn btn--ghost"
+                onClick={(e) => e.currentTarget.closest('details')?.removeAttribute('open')}>
+                Cancel
+              </button>
+            </div>
           </form>
         </details>
         <form action={deleteStylist}>

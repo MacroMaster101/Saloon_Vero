@@ -861,7 +861,10 @@ html.loader-done .loader-overlay { display:none !important; }
 .arow__edit[open] summary::before { content:"× Close"; }
 /* the edit form drops full-width below the action row when open */
 .arow__edit[open] { flex:1 1 100%; order:3; }
-.arow__edit > form { margin-top:12px; }
+.arow__edit > form { margin-top:14px; }
+/* Save + Cancel footer for the edit form */
+.aform__foot { display:flex; gap:10px; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+.aform__foot .btn { flex:0 0 auto; }
 
 /* Status + thumbnail */
 .astatus { font-size:13px; margin:0; }

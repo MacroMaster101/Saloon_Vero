@@ -52,7 +52,13 @@ function EditRow({ g }: { g: GalleryItem }) {
             <input type="hidden" name="id" value={g.id} />
             <GalleryFields g={g} />
             <FormStatus state={state} />
-            <SubmitButton pending={pending} />
+            <div className="aform__foot">
+              <SubmitButton pending={pending} />
+              <button type="button" className="btn btn--ghost"
+                onClick={(e) => e.currentTarget.closest('details')?.removeAttribute('open')}>
+                Cancel
+              </button>
+            </div>
           </form>
         </details>
         <form action={deleteGalleryItem}>
