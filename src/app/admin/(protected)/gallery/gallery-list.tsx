@@ -69,16 +69,20 @@ export function GalleryList({ items }: { items: GalleryItem[] }) {
     { id: 'hidden', label: 'Hidden', match: (g) => !g.is_active },
   ];
   return (
-    <>
-      <CreateForm />
-      <ListToolbar
-        items={items}
-        placeholder="Search gallery…"
-        searchText={(g) => `${g.title} ${g.tag} ${g.category}`}
-        chips={chips}
-        emptyLabel="No gallery items match your filters."
-        render={(rows) => <ul className="alist">{rows.map((g) => <EditRow key={g.id} g={g} />)}</ul>}
-      />
-    </>
+    <div className="acrud">
+      <div className="acrud__list">
+        <ListToolbar
+          items={items}
+          placeholder="Search gallery…"
+          searchText={(g) => `${g.title} ${g.tag} ${g.category}`}
+          chips={chips}
+          emptyLabel="No gallery items match your filters."
+          render={(rows) => <ul className="alist">{rows.map((g) => <EditRow key={g.id} g={g} />)}</ul>}
+        />
+      </div>
+      <div className="acrud__form">
+        <CreateForm />
+      </div>
+    </div>
   );
 }

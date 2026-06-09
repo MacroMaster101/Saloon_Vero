@@ -70,16 +70,20 @@ export function StylistsList({ stylists }: { stylists: Stylist[] }) {
     { id: 'hidden', label: 'Hidden', match: (s) => !s.is_active },
   ];
   return (
-    <>
-      <CreateForm />
-      <ListToolbar
-        items={stylists}
-        placeholder="Search stylists…"
-        searchText={(s) => `${s.name} ${s.role} ${(s.tags ?? []).join(' ')}`}
-        chips={chips}
-        emptyLabel="No stylists match your filters."
-        render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
-      />
-    </>
+    <div className="acrud">
+      <div className="acrud__list">
+        <ListToolbar
+          items={stylists}
+          placeholder="Search stylists…"
+          searchText={(s) => `${s.name} ${s.role} ${(s.tags ?? []).join(' ')}`}
+          chips={chips}
+          emptyLabel="No stylists match your filters."
+          render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
+        />
+      </div>
+      <div className="acrud__form">
+        <CreateForm />
+      </div>
+    </div>
   );
 }

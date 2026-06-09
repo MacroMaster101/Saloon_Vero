@@ -88,16 +88,20 @@ export function ServicesList({ services }: { services: Service[] }) {
     { id: 'hidden', label: 'Hidden', match: (s) => !s.is_active },
   ];
   return (
-    <>
-      <CreateForm />
-      <ListToolbar
-        items={services}
-        placeholder="Search services…"
-        searchText={(s) => `${s.name} ${s.category} ${s.slug}`}
-        chips={chips}
-        emptyLabel="No services match your filters."
-        render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
-      />
-    </>
+    <div className="acrud">
+      <div className="acrud__list">
+        <ListToolbar
+          items={services}
+          placeholder="Search services…"
+          searchText={(s) => `${s.name} ${s.category} ${s.slug}`}
+          chips={chips}
+          emptyLabel="No services match your filters."
+          render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
+        />
+      </div>
+      <div className="acrud__form">
+        <CreateForm />
+      </div>
+    </div>
   );
 }
