@@ -63,7 +63,7 @@ export default async function AdminHome() {
   ];
 
   return (
-    <div>
+    <div className="apage">
       <div className="ahead">
         <div><span className="eyebrow">Overview</span><h1 className="ahead__title">Dashboard</h1></div>
         <a href="/admin/blocked-slots" className="btn btn--ghost">Blocked slots</a>
@@ -77,7 +77,7 @@ export default async function AdminHome() {
       )}
 
       {!error && today.length === 0 && upcoming.length === 0 && (
-        <p className="lead" style={{ marginTop: 12 }}>No bookings yet.</p>
+        <div className="aempty"><p className="lead">No bookings yet.</p></div>
       )}
 
       {!error && (today.length > 0 || upcoming.length > 0) && (

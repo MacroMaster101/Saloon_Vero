@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { requireRole } from '@/lib/supabase/auth';
 import { signOut } from '../actions';
 import { Icon, type IconName } from '@/components/ui/icon';
@@ -42,7 +43,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
   return (
     <div className="shell shell--admin">
       <aside className="shell__side">
-        <a href="/" className="side__back"><Icon name="arrowLeft" className="ic" /> Back to site</a>
+        <Link href="/" className="side__back"><Icon name="arrowLeft" className="ic" /> Back to site</Link>
         <div className="side__brand"><span className="pole" style={{ height: 26 }} /> Vero Salon
           <span className="role-badge" style={{ marginLeft: 'auto' }}>{profile.role === 'admin' ? 'Admin' : 'Staff'}</span>
         </div>
