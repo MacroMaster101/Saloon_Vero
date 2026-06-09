@@ -45,19 +45,21 @@ function EditRow({ g }: { g: GalleryItem }) {
         <span className="arow__name">{g.title}</span>
         <span className="arow__meta">{g.tag}{g.is_active ? '' : ' · hidden'}</span>
       </div>
-      <details className="arow__edit">
-        <summary />
-        <form action={action} style={{ marginTop: 12 }}>
+      <div className="arow__actions">
+        <details className="arow__edit">
+          <summary />
+          <form action={action}>
+            <input type="hidden" name="id" value={g.id} />
+            <GalleryFields g={g} />
+            <FormStatus state={state} />
+            <SubmitButton pending={pending} />
+          </form>
+        </details>
+        <form action={deleteGalleryItem}>
           <input type="hidden" name="id" value={g.id} />
-          <GalleryFields g={g} />
-          <FormStatus state={state} />
-          <SubmitButton pending={pending} />
+          <button type="submit" className="btn btn--danger-outline">Delete</button>
         </form>
-      </details>
-      <form action={deleteGalleryItem} style={{ marginTop: 8 }}>
-        <input type="hidden" name="id" value={g.id} />
-        <button type="submit" className="btn btn--danger-outline">Delete</button>
-      </form>
+      </div>
     </li>
   );
 }

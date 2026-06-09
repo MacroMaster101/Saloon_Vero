@@ -785,6 +785,9 @@ html.loader-done .loader-overlay { display:none !important; }
 .acard { background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent);
   border-radius:var(--radius-md); padding:20px; box-shadow:var(--shadow-card); max-width:480px; margin-bottom:22px; }
 .acard__title { font-size:14px; font-weight:800; color:var(--fg); margin:0 0 16px; display:flex; align-items:center; gap:8px; }
+/* give the form's submit button breathing room from the fields above it */
+.shell--admin .acard > .btn--primary,
+.shell--admin .acard > [type="submit"] { margin-top:6px; width:100%; }
 
 /* Compact buttons inside the admin app (the global .btn is sized for the
    marketing site and looks oversized in dense CRUD rows / forms). */
@@ -845,15 +848,20 @@ html.loader-done .loader-overlay { display:none !important; }
 .arow__head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .arow__name { font-size:14px; font-weight:700; color:var(--fg); }
 .arow__meta { font-size:12px; color:var(--fg-muted); }
-.arow__edit summary { cursor:pointer; font-size:13px; font-weight:700; color:var(--fg-2); margin-top:12px; list-style:none;
+/* Edit + Delete sit together on one action row under the name */
+.arow__actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:12px; }
+.arow__actions form { margin:0; }
+.arow__edit { flex:none; }
+.arow__edit summary { cursor:pointer; font-size:13px; font-weight:700; color:var(--fg-2); list-style:none;
   display:inline-flex; align-items:center; padding:8px 14px; border:1.5px solid var(--line);
   border-radius:var(--radius-pill); transition:border-color .15s var(--ease), color .15s var(--ease); }
 .arow__edit summary:hover { border-color:var(--accent); color:var(--accent-dark); }
 .arow__edit summary::-webkit-details-marker { display:none; }
 .arow__edit summary::before { content:"✎ Edit"; }
 .arow__edit[open] summary::before { content:"× Close"; }
-/* keep the row's Delete form (last child) tucked tight under the edit toggle */
-.arow > form:last-child { margin-top:10px; }
+/* the edit form drops full-width below the action row when open */
+.arow__edit[open] { flex:1 1 100%; order:3; }
+.arow__edit > form { margin-top:12px; }
 
 /* Status + thumbnail */
 .astatus { font-size:13px; margin:0; }

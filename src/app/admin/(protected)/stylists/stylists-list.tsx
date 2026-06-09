@@ -46,19 +46,21 @@ function EditRow({ s }: { s: Stylist }) {
         <span className="arow__name">{s.name}</span>
         <span className="arow__meta">{s.role}{s.is_active ? '' : ' · hidden'}</span>
       </div>
-      <details className="arow__edit">
-        <summary />
-        <form action={action} style={{ marginTop: 12 }}>
+      <div className="arow__actions">
+        <details className="arow__edit">
+          <summary />
+          <form action={action}>
+            <input type="hidden" name="id" value={s.id} />
+            <StylistFields s={s} />
+            <FormStatus state={state} />
+            <SubmitButton pending={pending} />
+          </form>
+        </details>
+        <form action={deleteStylist}>
           <input type="hidden" name="id" value={s.id} />
-          <StylistFields s={s} />
-          <FormStatus state={state} />
-          <SubmitButton pending={pending} />
+          <button type="submit" className="btn btn--danger-outline">Delete</button>
         </form>
-      </details>
-      <form action={deleteStylist} style={{ marginTop: 8 }}>
-        <input type="hidden" name="id" value={s.id} />
-        <button type="submit" className="btn btn--danger-outline">Delete</button>
-      </form>
+      </div>
     </li>
   );
 }

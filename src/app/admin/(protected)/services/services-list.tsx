@@ -61,21 +61,23 @@ function EditRow({ s }: { s: Service }) {
         <span className="arow__name">{s.name}</span>
         <span className="arow__meta">{money(s.price_lkr)} · {durationLabel(s.duration_min)} · {s.category}{s.is_active ? '' : ' · hidden'}</span>
       </div>
-      <details className="arow__edit">
-        <summary />
-        <form action={action} style={{ marginTop: 12 }}>
+      <div className="arow__actions">
+        <details className="arow__edit">
+          <summary />
+          <form action={action}>
+            <input type="hidden" name="id" value={s.id} />
+            <ServiceFields s={s} />
+            <FormStatus state={state} />
+            <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+              <SubmitButton pending={pending} />
+            </div>
+          </form>
+        </details>
+        <form action={deleteService}>
           <input type="hidden" name="id" value={s.id} />
-          <ServiceFields s={s} />
-          <FormStatus state={state} />
-          <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-            <SubmitButton pending={pending} />
-          </div>
+          <button type="submit" className="btn btn--danger-outline">Delete</button>
         </form>
-      </details>
-      <form action={deleteService} style={{ marginTop: 8 }}>
-        <input type="hidden" name="id" value={s.id} />
-        <button type="submit" className="btn btn--danger-outline">Delete</button>
-      </form>
+      </div>
     </li>
   );
 }
