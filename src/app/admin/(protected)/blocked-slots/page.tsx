@@ -30,7 +30,7 @@ export default async function BlockedSlotsPage() {
   const rows = (data ?? []) as unknown as Row[];
 
   return (
-    <div>
+    <div className="apage">
       <div className="ahead">
         <h1 className="ahead__title">Blocked slots</h1>
         <a href="/admin" className="btn btn--ghost">Back to dashboard</a>

@@ -23,7 +23,7 @@ export default async function SchedulePage() {
   });
 
   return (
-    <div>
+    <div className="apage">
       <span className="eyebrow">Your day</span>
       <h1 className="h-section" style={{ fontSize: 30, margin: '8px 0 6px' }}>My schedule</h1>
       <p className="step__hint" style={{ marginBottom: 22 }}>Your assigned appointments only.</p>

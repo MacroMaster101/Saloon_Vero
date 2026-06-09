@@ -16,7 +16,7 @@ export default async function ContentPage() {
     getBusinessHours(),
   ]);
   return (
-    <div>
+    <div className="apage">
       <div className="ahead">
         <div>
           <span className="eyebrow">Homepage</span>
