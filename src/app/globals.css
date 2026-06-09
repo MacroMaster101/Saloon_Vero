@@ -794,6 +794,16 @@ html.loader-done .loader-overlay { display:none !important; }
 .shell--admin .arow .btn,
 .shell--admin .arow__edit .btn { font-size:13px; padding:9px 16px; }
 
+/* Admin button contrast: solid gold with white text reads far better than
+   accent-on-fg, and gives Save/Add a clear primary weight. */
+.shell--admin .btn--primary { color:#fff; box-shadow:0 6px 16px -8px color-mix(in srgb, var(--accent) 60%, transparent); }
+.shell--admin .btn--primary:hover { color:#fff; }
+/* Delete: filled subtle-danger so it reads as a real button, not faint outline */
+.shell--admin .btn--danger-outline { background:color-mix(in srgb, var(--error) 12%, transparent);
+  color:var(--error); border-color:color-mix(in srgb, var(--error) 40%, transparent); }
+.shell--admin .btn--danger-outline:hover { background:color-mix(in srgb, var(--error) 20%, transparent);
+  border-color:var(--error); }
+
 /* Form primitives */
 .afield { display:grid; gap:5px; margin-bottom:14px; }
 .alabel { font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--fg-muted); }
@@ -835,10 +845,15 @@ html.loader-done .loader-overlay { display:none !important; }
 .arow__head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .arow__name { font-size:14px; font-weight:700; color:var(--fg); }
 .arow__meta { font-size:12px; color:var(--fg-muted); }
-.arow__edit summary { cursor:pointer; font-size:13px; color:var(--fg-2); margin-top:8px; list-style:none; }
+.arow__edit summary { cursor:pointer; font-size:13px; font-weight:700; color:var(--fg-2); margin-top:12px; list-style:none;
+  display:inline-flex; align-items:center; padding:8px 14px; border:1.5px solid var(--line);
+  border-radius:var(--radius-pill); transition:border-color .15s var(--ease), color .15s var(--ease); }
+.arow__edit summary:hover { border-color:var(--accent); color:var(--accent-dark); }
 .arow__edit summary::-webkit-details-marker { display:none; }
 .arow__edit summary::before { content:"✎ Edit"; }
 .arow__edit[open] summary::before { content:"× Close"; }
+/* keep the row's Delete form (last child) tucked tight under the edit toggle */
+.arow > form:last-child { margin-top:10px; }
 
 /* Status + thumbnail */
 .astatus { font-size:13px; margin:0; }
