@@ -26,6 +26,30 @@
   color-scheme:dark;
 }
 
+/* ── Admin redesign: bright "Warm Editorial" (B1) ──────────
+   Scoped to the admin shell so the public site palette is unchanged.
+   Light: white content canvas, subtle warm sidebar, darker text.        */
+.shell--admin {
+  --bg:#FFFFFF;          /* main content canvas */
+  --bg-2:#F4F1EA;        /* sidebar / secondary surface */
+  --surface:#FFFFFF;     /* cards, inputs */
+  --fg:#1F1A12;          /* primary text — darker for contrast */
+  --fg-2:#4A4133;        /* secondary text */
+  --fg-muted:#6B6353;    /* muted/labels */
+  --line:#E6E0D4;        /* borders */
+  --accent-tint:#FBEFD8; /* active-nav / segment tint */
+}
+[data-theme="dark"] .shell--admin {
+  --bg:#1C1611;
+  --bg-2:#241C15;
+  --surface:#2A2018;
+  --fg:#F5ECDD;
+  --fg-2:#C7B7A0;
+  --fg-muted:#9A876C;
+  --line:#3A2E22;
+  --accent-tint:rgba(232,176,90,.14);
+}
+
 /* ── Reset / Base ────────────────────────────────────────── */
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
@@ -609,12 +633,19 @@ html.loader-done .loader-overlay { display:none !important; }
 .panel--danger h2 { color:var(--error); }
 
 /* ── Sidebar shell (account + admin/staff) ── */
-.shell { display:grid; grid-template-columns:250px 1fr; background:var(--surface);
+.shell { display:grid; grid-template-columns:250px 1fr; grid-auto-rows:minmax(0,1fr); background:var(--surface);
   border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden;
   min-height:calc(100vh - 120px); box-shadow:0 14px 40px -18px rgba(184,116,42,.2);
   max-width:var(--maxw); margin:30px auto; }
+/* Admin shell fills the full viewport — no surrounding frame/card */
+.shell--admin { max-width:none; margin:0; border:0; border-radius:0; box-shadow:none;
+  min-height:100vh; min-height:100svh; }
 .shell__side { background:var(--bg-2); border-right:1px solid var(--line); padding:20px 16px; display:flex; flex-direction:column; }
-.shell__main { padding:30px 34px; background:var(--bg); }
+.shell__main { padding:30px 34px; background:var(--bg); display:flex; flex-direction:column; min-width:0; }
+/* a page can opt its root into filling the full main area */
+.apage { flex:1 1 auto; display:flex; flex-direction:column; }
+/* empty-state that grows to centre itself in the remaining space */
+.aempty { flex:1 1 auto; display:grid; place-items:center; min-height:240px; color:var(--fg-2); }
 .side__back { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--fg-muted); padding:6px 4px; margin-bottom:18px; }
 .side__back:hover { color:var(--accent-dark); }
 .side__id { display:flex; align-items:center; gap:12px; padding:0 4px 18px; border-bottom:1px solid var(--line); margin-bottom:8px; }
