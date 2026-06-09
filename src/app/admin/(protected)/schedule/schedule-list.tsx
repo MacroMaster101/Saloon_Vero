@@ -19,7 +19,7 @@ export function ScheduleList({ rows }: { rows: SchedRow[] }) {
       chips={chips}
       emptyLabel="No appointments match your filters."
       render={(list) => (
-        <ul className="bk-list" style={{ maxWidth: 620 }}>
+        <ul className="bk-list bk-list--grid">
           {list.map((r) => (
             <li key={r.reference} className="bk-card">
               <span className="bk-card__time"><b>{r.timeLabel}</b><span>{r.ampm}</span></span>

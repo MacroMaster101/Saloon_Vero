@@ -26,6 +26,30 @@
   color-scheme:dark;
 }
 
+/* ── Admin redesign: bright "Warm Editorial" (B1) ──────────
+   Scoped to the admin shell so the public site palette is unchanged.
+   Light: white content canvas, subtle warm sidebar, darker text.        */
+.shell--admin {
+  --bg:#FFFFFF;          /* main content canvas */
+  --bg-2:#F4F1EA;        /* sidebar / secondary surface */
+  --surface:#FFFFFF;     /* cards, inputs */
+  --fg:#1F1A12;          /* primary text — darker for contrast */
+  --fg-2:#4A4133;        /* secondary text */
+  --fg-muted:#6B6353;    /* muted/labels */
+  --line:#E6E0D4;        /* borders */
+  --accent-tint:#FBEFD8; /* active-nav / segment tint */
+}
+[data-theme="dark"] .shell--admin {
+  --bg:#1C1611;
+  --bg-2:#241C15;
+  --surface:#2A2018;
+  --fg:#F5ECDD;
+  --fg-2:#C7B7A0;
+  --fg-muted:#9A876C;
+  --line:#3A2E22;
+  --accent-tint:rgba(232,176,90,.14);
+}
+
 /* ── Reset / Base ────────────────────────────────────────── */
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
@@ -99,6 +123,66 @@ body, .nav, .barber, .info-card, .book__card, .book__main,
 .nav__links a:hover { color:var(--fg); }
 .nav__links a:hover::after { right:0; }
 .nav__auth { display:inline-flex; gap:14px; align-items:center; }
+
+/* ── Profile dropdown (logged-in header) ──────────────────── */
+.nav-profile { position:relative; display:inline-flex; }
+.nav-profile__btn { background:none; border:0; padding:2px; border-radius:50%; cursor:pointer; line-height:0;
+  transition:transform .15s var(--ease), box-shadow .2s var(--ease); }
+.nav-profile__btn:hover { transform:scale(1.05); }
+.nav-profile__btn:focus-visible { outline:none; box-shadow:0 0 0 3px var(--accent-tint); }
+/* avatar image (uploaded photo or DiceBear fallback) */
+.nav-profile__avatar { width:38px; height:38px; border-radius:50%; object-fit:cover; display:block;
+  background:var(--bg-2); box-shadow:0 2px 8px -2px color-mix(in srgb, var(--accent-dark) 45%, transparent); }
+.nav-profile__head .nav-profile__avatar { width:42px; height:42px; }
+.nav-profile__menu { position:absolute; top:calc(100% + 10px); right:0; min-width:220px; z-index:80;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+  box-shadow:0 18px 44px -18px rgba(46,37,25,.35); padding:8px; display:grid; gap:2px;
+  transform-origin:top right; animation:nav-pop .14s var(--ease); }
+@keyframes nav-pop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+.nav-profile__head { display:flex; align-items:center; gap:10px; padding:8px 10px 10px;
+  border-bottom:1px solid var(--line); margin-bottom:6px; }
+.nav-profile__id { min-width:0; }
+.nav-profile__id b { display:block; font-size:14px; color:var(--fg); line-height:1.2;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
+.nav-profile__id span { display:block; font-size:11.5px; color:var(--fg-muted);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
+.nav-profile__item { display:block; width:100%; text-align:left; box-sizing:border-box;
+  font-family:inherit; font-size:13.5px; font-weight:600; color:var(--fg); background:none; border:0;
+  padding:9px 10px; border-radius:var(--radius-sm); cursor:pointer; transition:background .15s var(--ease), color .15s var(--ease); }
+.nav-profile__item:hover { background:var(--bg-2); color:var(--accent-dark); }
+.nav-profile__item--danger { color:var(--error); }
+.nav-profile__item--danger:hover { background:color-mix(in srgb, var(--error) 10%, transparent); color:var(--error); }
+.nav-profile__menu form { margin:0; }
+
+/* ── Profile edit modal (popup) ───────────────────────────── */
+.pm__overlay { position:fixed; inset:0; z-index:200; display:grid; place-items:center; padding:20px;
+  background:color-mix(in srgb, #1c130a 55%, transparent); backdrop-filter:blur(3px);
+  animation:pm-fade .15s var(--ease); }
+@keyframes pm-fade { from { opacity:0; } to { opacity:1; } }
+.pm { position:relative; width:100%; max-width:440px; background:var(--surface); color:var(--fg);
+  border:1px solid var(--line); border-radius:var(--radius-lg); padding:26px 24px 22px;
+  box-shadow:0 30px 70px -24px rgba(0,0,0,.5); animation:pm-pop .18s var(--ease); }
+@keyframes pm-pop { from { opacity:0; transform:translateY(10px) scale(.98); } to { opacity:1; transform:none; } }
+.pm__x { position:absolute; top:12px; right:14px; background:none; border:0; font-size:26px; line-height:1;
+  color:var(--fg-muted); cursor:pointer; padding:4px 8px; border-radius:8px; transition:color .15s, background .15s; }
+.pm__x:hover { color:var(--fg); background:var(--bg-2); }
+.pm__title { font-size:20px; font-weight:800; letter-spacing:-.02em; margin:0 0 18px; }
+.pm__avatar-row { display:flex; gap:16px; align-items:center; padding-bottom:18px; margin-bottom:18px;
+  border-bottom:1px solid var(--line); }
+.pm__avatar { width:74px; height:74px; border-radius:50%; object-fit:cover; flex:none; background:var(--bg-2);
+  box-shadow:0 4px 14px -6px color-mix(in srgb, var(--accent-dark) 50%, transparent); }
+.pm__avatar-actions { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.pm__avatar-actions .btn { font-size:13px; padding:9px 16px; }
+.pm__hint { flex:1 1 100%; font-size:11.5px; color:var(--fg-muted); margin:2px 0 0; line-height:1.4; }
+.pm__field { display:grid; gap:5px; margin-bottom:14px; }
+.pm__field span { font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--fg-muted); }
+.pm__field input { width:100%; box-sizing:border-box; padding:11px 13px; border:1.5px solid var(--line);
+  border-radius:var(--radius-sm); font-size:14px; font-family:inherit; color:var(--fg); background:var(--surface);
+  transition:border-color .15s var(--ease), box-shadow .15s var(--ease); }
+.pm__field input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-tint); }
+.pm__field input:disabled { color:var(--fg-muted); background:var(--bg-2); }
+.pm__foot { display:flex; gap:10px; margin-top:18px; }
+@media (max-width:480px){ .pm { padding:22px 18px 18px; } .pm__foot .btn { flex:1; } }
 .nav__burger { display:none; background:none; border:0; cursor:pointer; padding:8px; margin-left:auto; }
 .nav__burger span { display:block; width:24px; height:2px; background:var(--fg); margin:5px 0; border-radius:2px; }
 .pole { width:8px; border-radius:var(--radius-pill);
@@ -609,21 +693,30 @@ html.loader-done .loader-overlay { display:none !important; }
 .panel--danger h2 { color:var(--error); }
 
 /* ── Sidebar shell (account + admin/staff) ── */
-.shell { display:grid; grid-template-columns:250px 1fr; background:var(--surface);
+.shell { display:grid; grid-template-columns:250px 1fr; grid-auto-rows:minmax(0,1fr); background:var(--surface);
   border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden;
   min-height:calc(100vh - 120px); box-shadow:0 14px 40px -18px rgba(184,116,42,.2);
   max-width:var(--maxw); margin:30px auto; }
+/* Admin shell fills the full viewport — no surrounding frame/card */
+.shell--admin { max-width:none; margin:0; border:0; border-radius:0; box-shadow:none;
+  min-height:100vh; min-height:100svh; }
 .shell__side { background:var(--bg-2); border-right:1px solid var(--line); padding:20px 16px; display:flex; flex-direction:column; }
-.shell__main { padding:30px 34px; background:var(--bg); }
+.shell__main { padding:30px 34px; background:var(--bg); display:flex; flex-direction:column; min-width:0; }
+/* a page can opt its root into filling the full main area */
+.apage { flex:1 1 auto; display:flex; flex-direction:column; }
+/* empty-state that grows to centre itself in the remaining space */
+.aempty { flex:1 1 auto; display:grid; place-items:center; min-height:280px; }
+.aempty .lead { color:var(--fg-muted); font-size:15px; }
 .side__back { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--fg-muted); padding:6px 4px; margin-bottom:18px; }
 .side__back:hover { color:var(--accent-dark); }
-.side__id { display:flex; align-items:center; gap:12px; padding:0 4px 18px; border-bottom:1px solid var(--line); margin-bottom:8px; }
+.side__id { display:flex; align-items:center; gap:12px; padding:0 4px 18px; border-bottom:1px solid var(--line); margin-bottom:8px; min-width:0; }
 .side__brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px; color:var(--fg); padding:2px 4px 16px; border-bottom:1px solid var(--line); margin-bottom:6px; }
 .avatar { width:46px; height:46px; border-radius:50%; flex:none; position:relative; overflow:hidden;
   background:conic-gradient(from 210deg,var(--accent),var(--accent-dark),var(--accent-tint),var(--accent)); }
 .avatar b { position:absolute; inset:0; display:grid; place-items:center; font-weight:700; color:#fff; font-size:18px; }
 .avatar img { width:100%; height:100%; object-fit:cover; }
-.side__name { font-weight:700; font-size:14.5px; color:var(--fg); line-height:1.2; }
+.side__name { font-weight:700; font-size:14.5px; color:var(--fg); line-height:1.2;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; max-width:100%; }
 .role-badge { font-size:9.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--accent-text);
   font-weight:700; background:var(--accent-tint); padding:3px 8px; border-radius:var(--radius-pill); }
 .side__meta { padding:12px 4px 16px; border-bottom:1px solid var(--line); margin-bottom:12px; display:grid; gap:9px; }
@@ -633,7 +726,8 @@ html.loader-done .loader-overlay { display:none !important; }
 .side__nav a { display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:11px; font-size:14px; font-weight:600; color:var(--fg-2); cursor:pointer; }
 .side__nav a:hover { background:color-mix(in srgb, var(--accent) 8%, transparent); color:var(--fg); }
 .side__nav a.on { background:var(--accent-tint); color:var(--accent-text); }
-.side__foot { margin-top:auto; padding-top:14px; }
+.side__foot { margin-top:auto; padding-top:14px; display:flex; align-items:center; gap:10px; }
+.side__foot form { flex:1; min-width:0; }
 .side__foot .btn { width:100%; }
 
 /* ── List toolbar (search + chips) ── */
@@ -641,7 +735,8 @@ html.loader-done .loader-overlay { display:none !important; }
 .search { position:relative; flex:1; min-width:220px; }
 .search .ic { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--fg-muted); }
 .search input { width:100%; font-size:14px; color:var(--fg); background:var(--surface);
-  border:1.5px solid var(--line); border-radius:var(--radius-pill); padding:11px 14px 11px 38px; }
+  border:1.5px solid var(--line); border-radius:var(--radius-pill); padding:10px 14px 10px 36px;
+  transition:border-color .15s var(--ease); }
 .search input:focus { outline:none; border-color:var(--accent); }
 .chips { display:flex; gap:7px; flex-wrap:wrap; }
 .chip { font-size:12px; font-weight:700; padding:8px 14px; border-radius:var(--radius-pill);
@@ -661,6 +756,8 @@ html.loader-done .loader-overlay { display:none !important; }
 
 /* ── Booking / schedule cards ── */
 .bk-list { list-style:none; margin:0; padding:0; display:grid; gap:11px; }
+/* admin schedule: cards flow into responsive columns to fill the width */
+.bk-list--grid { grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); }
 .bk-card { display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--line);
   border-radius:14px; padding:14px 16px; box-shadow:0 10px 26px -22px rgba(184,116,42,.3); }
 .bk-card__ic { width:38px; height:38px; border-radius:11px; background:var(--bg-2); display:grid; place-items:center; color:var(--accent-text); flex:none; }
@@ -684,6 +781,21 @@ html.loader-done .loader-overlay { display:none !important; }
 .person select { font-family:inherit; font-size:13px; color:var(--fg); background:var(--bg-2);
   border:1.5px solid transparent; border-radius:10px; padding:8px 10px; cursor:pointer; }
 .person select:focus { outline:none; border-color:var(--accent); }
+/* desktop: identity grows, controls hug the right edge */
+.person__id { display:flex; align-items:center; gap:12px; min-width:0; flex:1; }
+.person__edit { display:flex; align-items:center; gap:8px; margin-left:auto; }
+.person__del { margin-left:4px; }
+
+/* ── Space-filling CRUD layout: list (left) + add-form (right) ──── */
+.acrud { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(280px,.9fr); gap:22px; align-items:start; }
+.acrud__list { min-width:0; }
+.acrud__form { min-width:0; }
+.acrud__form .acard { position:sticky; top:20px; margin:0; max-width:none; }
+
+/* ── Content page: section forms in a 2-up grid ────────────────── */
+.acontent-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+.acontent-grid .acard { margin:0; max-width:none; }
+
 .btn--danger-outline { background:transparent; color:var(--error); border-color:var(--error); }
 .btn--danger-outline:hover { background:color-mix(in srgb, var(--error) 8%, transparent); }
 
@@ -707,18 +819,18 @@ html.loader-done .loader-overlay { display:none !important; }
 /* ===== ADMIN (redesign — direction B) ===== */
 /* Page header */
 .ahead { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
-.ahead__title { font-size:30px; font-weight:700; letter-spacing:-.025em; color:var(--fg); margin:6px 0 0; }
+.ahead__title { font-size:32px; font-weight:800; letter-spacing:-.03em; color:var(--fg); margin:6px 0 0; }
 
 /* Dashboard stat tiles */
 .adash__tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:18px 0 30px; }
-.atile { background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent);
-  border-radius:var(--radius-sm); padding:15px 16px; box-shadow:var(--shadow-card);
+.atile { background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--accent);
+  border-radius:var(--radius-md); padding:18px 18px 16px; box-shadow:0 6px 18px -10px rgba(120,75,20,.22);
   transition:transform .15s var(--ease), box-shadow .2s var(--ease); }
-.atile:hover { transform:translateY(-3px); }
-.atile__k { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-muted); margin-bottom:8px; }
-.atile__n { font-size:30px; font-weight:800; color:var(--fg); letter-spacing:-.03em; line-height:1; }
-.atile__n em { color:var(--accent); font-style:normal; }
-.atile__sub { font-size:11px; color:var(--fg-2); margin-top:5px; }
+.atile:hover { transform:translateY(-3px); box-shadow:0 12px 26px -12px rgba(120,75,20,.30); }
+.atile__k { font-size:10.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-muted); margin-bottom:10px; }
+.atile__n { font-size:34px; font-weight:800; color:var(--fg); letter-spacing:-.03em; line-height:1; }
+.atile__n em { color:var(--accent-text); font-style:normal; }
+.atile__sub { font-size:11.5px; color:var(--fg-2); margin-top:6px; }
 @media (max-width:780px){ .adash__tiles { grid-template-columns:1fr 1fr; } }
 
 /* Hours editor row */
@@ -733,13 +845,34 @@ html.loader-done .loader-overlay { display:none !important; }
 .acard { background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent);
   border-radius:var(--radius-md); padding:20px; box-shadow:var(--shadow-card); max-width:480px; margin-bottom:22px; }
 .acard__title { font-size:14px; font-weight:800; color:var(--fg); margin:0 0 16px; display:flex; align-items:center; gap:8px; }
+/* give the form's submit button breathing room from the fields above it */
+.shell--admin .acard > .btn--primary,
+.shell--admin .acard > [type="submit"] { margin-top:6px; width:100%; }
+
+/* Compact buttons inside the admin app (the global .btn is sized for the
+   marketing site and looks oversized in dense CRUD rows / forms). */
+.shell--admin .btn { font-size:13.5px; padding:10px 18px; gap:8px; }
+.shell--admin .acard .btn { padding:11px 20px; }
+.shell--admin .person .btn,
+.shell--admin .arow .btn,
+.shell--admin .arow__edit .btn { font-size:13px; padding:9px 16px; }
+
+/* Admin button contrast: solid gold with white text reads far better than
+   accent-on-fg, and gives Save/Add a clear primary weight. */
+.shell--admin .btn--primary { color:#fff; box-shadow:0 6px 16px -8px color-mix(in srgb, var(--accent) 60%, transparent); }
+.shell--admin .btn--primary:hover { color:#fff; }
+/* Delete: filled subtle-danger so it reads as a real button, not faint outline */
+.shell--admin .btn--danger-outline { background:color-mix(in srgb, var(--error) 12%, transparent);
+  color:var(--error); border-color:color-mix(in srgb, var(--error) 40%, transparent); }
+.shell--admin .btn--danger-outline:hover { background:color-mix(in srgb, var(--error) 20%, transparent);
+  border-color:var(--error); }
 
 /* Form primitives */
 .afield { display:grid; gap:5px; margin-bottom:14px; }
 .alabel { font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--fg-muted); }
 .ainput, .atextarea { width:100%; box-sizing:border-box; padding:11px 13px; border:1.5px solid var(--line);
-  border-radius:var(--radius-sm); background:var(--bg-2); color:var(--fg); font-family:inherit; font-size:14px;
-  transition:border-color .2s, box-shadow .2s, background .2s; }
+  border-radius:var(--radius-sm); font-size:14px; color:var(--fg); background:var(--surface);
+  transition:border-color .15s var(--ease), box-shadow .15s var(--ease); }
 .atextarea { resize:vertical; }
 .ainput:focus, .atextarea:focus { outline:none; border-color:var(--accent); background:var(--surface);
   box-shadow:0 0 0 3px var(--accent-tint); }
@@ -769,14 +902,32 @@ html.loader-done .loader-overlay { display:none !important; }
 
 /* List rows */
 .alist { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-.arow { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px 16px; }
+.arow { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:16px 18px; transition:border-color .15s var(--ease), box-shadow .2s var(--ease); }
+.arow:hover { border-color:color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow:0 6px 16px -12px rgba(120,75,20,.25); }
 .arow__head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .arow__name { font-size:14px; font-weight:700; color:var(--fg); }
 .arow__meta { font-size:12px; color:var(--fg-muted); }
-.arow__edit summary { cursor:pointer; font-size:13px; color:var(--fg-2); margin-top:8px; list-style:none; }
+/* Edit + Delete sit together on one action row under the name */
+.arow__actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:12px; }
+.arow__actions form { margin:0; }
+.arow__edit { flex:none; }
+.arow__edit summary { cursor:pointer; font-size:13px; font-weight:700; color:var(--fg-2); list-style:none;
+  display:inline-flex; align-items:center; padding:8px 14px; border:1.5px solid var(--line);
+  border-radius:var(--radius-pill); transition:border-color .15s var(--ease), color .15s var(--ease); }
+.arow__edit summary:hover { border-color:var(--accent); color:var(--accent-dark); }
 .arow__edit summary::-webkit-details-marker { display:none; }
 .arow__edit summary::before { content:"✎ Edit"; }
-.arow__edit[open] summary::before { content:"× Close"; }
+/* when open, the summary is just a state label — Save/Cancel in the footer
+   handle the actions, so it must not look like a second "Cancel/Close". */
+.arow__edit[open] summary::before { content:"Editing"; }
+.arow__edit[open] summary { color:var(--accent-text); border-color:var(--accent); background:var(--accent-tint); cursor:default; }
+/* the edit form drops full-width below the action row when open */
+.arow__edit[open] { flex:1 1 100%; order:3; }
+.arow__edit > form { margin-top:14px; }
+/* Save + Cancel footer for the edit form */
+.aform__foot { display:flex; gap:10px; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+.aform__foot .btn { flex:0 0 auto; }
 
 /* Status + thumbnail */
 .astatus { font-size:13px; margin:0; }
@@ -959,10 +1110,8 @@ html.loader-done .loader-overlay { display:none !important; }
   .nav__inner { gap:12px; height:64px; }
   .brand__name { font-size:17px; }
   /* push auth right — the theme toggle that used to do this is now hidden.
-     Covers both states: logged-in (.nav__auth) and logged-out (Sign in = .nav__cta) */
-  .nav__auth, .nav .nav__cta { margin-left:auto; }
-  .nav__auth { gap:8px; }
-  .nav__auth .btn { padding:8px 12px; font-size:13px; }
+     Covers logged-in (.nav-profile) and logged-out (Sign in = .nav__cta) */
+  .nav-profile, .nav .nav__cta { margin-left:auto; }
   /* theme toggle lives in the More sheet on mobile, not the header */
   .nav .theme-toggle { display:none; }
 }
@@ -1140,6 +1289,11 @@ html, body { overflow-x:hidden; }
   .arow--split { display:flex; flex-direction:column; align-items:stretch; gap:12px; }
   .arow--split .arow__main { display:grid; gap:4px; }
   .arow--split .btn { width:100%; }
+
+  /* space-filling layouts collapse to a single column on mobile */
+  .acrud { grid-template-columns:1fr; gap:18px; }
+  .acrud__form .acard { position:static; }
+  .acontent-grid { grid-template-columns:1fr; }
 
   /* People: identity on top, controls stacked & full-width */
   .person { flex-direction:column; align-items:stretch; gap:12px; padding:16px; }

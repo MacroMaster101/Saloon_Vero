@@ -1,8 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { safeNext } from '@/lib/auth/redirect';
-import { getProfile } from '@/lib/supabase/auth';
-import { roleDefaultPath } from '@/lib/auth/roles';
+import { defaultLandingPath } from '@/lib/auth/roles';
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -14,6 +13,5 @@ export async function GET(request: NextRequest) {
     if (error) return NextResponse.redirect(new URL('/login?error=oauth', url.origin));
   }
   if (next) return NextResponse.redirect(new URL(next, url.origin));
-  const profile = await getProfile();
-  return NextResponse.redirect(new URL(roleDefaultPath(profile?.role ?? 'user'), url.origin));
+  return NextResponse.redirect(new URL(defaultLandingPath(), url.origin));
 }

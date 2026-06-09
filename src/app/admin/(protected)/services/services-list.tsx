@@ -61,21 +61,27 @@ function EditRow({ s }: { s: Service }) {
         <span className="arow__name">{s.name}</span>
         <span className="arow__meta">{money(s.price_lkr)} · {durationLabel(s.duration_min)} · {s.category}{s.is_active ? '' : ' · hidden'}</span>
       </div>
-      <details className="arow__edit">
-        <summary />
-        <form action={action} style={{ marginTop: 12 }}>
+      <div className="arow__actions">
+        <details className="arow__edit">
+          <summary />
+          <form action={action}>
+            <input type="hidden" name="id" value={s.id} />
+            <ServiceFields s={s} />
+            <FormStatus state={state} />
+            <div className="aform__foot">
+              <SubmitButton pending={pending} />
+              <button type="button" className="btn btn--ghost"
+                onClick={(e) => e.currentTarget.closest('details')?.removeAttribute('open')}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </details>
+        <form action={deleteService}>
           <input type="hidden" name="id" value={s.id} />
-          <ServiceFields s={s} />
-          <FormStatus state={state} />
-          <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-            <SubmitButton pending={pending} />
-          </div>
+          <button type="submit" className="btn btn--danger-outline">Delete</button>
         </form>
-      </details>
-      <form action={deleteService} style={{ marginTop: 8 }}>
-        <input type="hidden" name="id" value={s.id} />
-        <button type="submit" className="btn btn--danger-outline">Delete</button>
-      </form>
+      </div>
     </li>
   );
 }
@@ -88,16 +94,20 @@ export function ServicesList({ services }: { services: Service[] }) {
     { id: 'hidden', label: 'Hidden', match: (s) => !s.is_active },
   ];
   return (
-    <>
-      <CreateForm />
-      <ListToolbar
-        items={services}
-        placeholder="Search services…"
-        searchText={(s) => `${s.name} ${s.category} ${s.slug}`}
-        chips={chips}
-        emptyLabel="No services match your filters."
-        render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
-      />
-    </>
+    <div className="acrud">
+      <div className="acrud__list">
+        <ListToolbar
+          items={services}
+          placeholder="Search services…"
+          searchText={(s) => `${s.name} ${s.category} ${s.slug}`}
+          chips={chips}
+          emptyLabel="No services match your filters."
+          render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
+        />
+      </div>
+      <div className="acrud__form">
+        <CreateForm />
+      </div>
+    </div>
   );
 }

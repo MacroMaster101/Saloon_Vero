@@ -23,10 +23,14 @@ export default async function SchedulePage() {
   });
 
   return (
-    <div>
-      <span className="eyebrow">Your day</span>
-      <h1 className="h-section" style={{ fontSize: 30, margin: '8px 0 6px' }}>My schedule</h1>
-      <p className="step__hint" style={{ marginBottom: 22 }}>Your assigned appointments only.</p>
+    <div className="apage">
+      <div className="ahead">
+        <div>
+          <span className="eyebrow">Your day</span>
+          <h1 className="ahead__title">My schedule</h1>
+        </div>
+      </div>
+      <p className="step__hint" style={{ marginBottom: 22, marginTop: -10 }}>Your assigned appointments only.</p>
       {rows.length === 0 ? <p className="step__hint">No assigned bookings.</p> : <ScheduleList rows={rows} />}
     </div>
   );

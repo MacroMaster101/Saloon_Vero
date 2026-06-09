@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon, type IconName } from '@/components/ui/icon';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { signOut } from '../actions';
 
 export type AdminNavItem = { href: string; label: string; icon: IconName; short?: string };
@@ -52,11 +53,14 @@ export function AdminBottomNav({
               </Link>
             ))}
           </nav>
-          <form action={signOut} className="more-sheet__row" style={{ marginTop: 18 }}>
-            <button className="btn btn--ghost" type="submit" style={{ width: '100%' }}>
-              <Icon name="logout" className="ic" /> Sign out
-            </button>
-          </form>
+          <div className="more-sheet__row" style={{ marginTop: 18, display: 'flex', gap: 10, alignItems: 'center' }}>
+            <form action={signOut} style={{ flex: 1 }}>
+              <button className="btn btn--ghost" type="submit" style={{ width: '100%' }}>
+                <Icon name="logout" className="ic" /> Sign out
+              </button>
+            </form>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
 

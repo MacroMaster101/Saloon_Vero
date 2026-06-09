@@ -46,19 +46,27 @@ function EditRow({ s }: { s: Stylist }) {
         <span className="arow__name">{s.name}</span>
         <span className="arow__meta">{s.role}{s.is_active ? '' : ' · hidden'}</span>
       </div>
-      <details className="arow__edit">
-        <summary />
-        <form action={action} style={{ marginTop: 12 }}>
+      <div className="arow__actions">
+        <details className="arow__edit">
+          <summary />
+          <form action={action}>
+            <input type="hidden" name="id" value={s.id} />
+            <StylistFields s={s} />
+            <FormStatus state={state} />
+            <div className="aform__foot">
+              <SubmitButton pending={pending} />
+              <button type="button" className="btn btn--ghost"
+                onClick={(e) => e.currentTarget.closest('details')?.removeAttribute('open')}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </details>
+        <form action={deleteStylist}>
           <input type="hidden" name="id" value={s.id} />
-          <StylistFields s={s} />
-          <FormStatus state={state} />
-          <SubmitButton pending={pending} />
+          <button type="submit" className="btn btn--danger-outline">Delete</button>
         </form>
-      </details>
-      <form action={deleteStylist} style={{ marginTop: 8 }}>
-        <input type="hidden" name="id" value={s.id} />
-        <button type="submit" className="btn btn--danger-outline">Delete</button>
-      </form>
+      </div>
     </li>
   );
 }
@@ -70,16 +78,20 @@ export function StylistsList({ stylists }: { stylists: Stylist[] }) {
     { id: 'hidden', label: 'Hidden', match: (s) => !s.is_active },
   ];
   return (
-    <>
-      <CreateForm />
-      <ListToolbar
-        items={stylists}
-        placeholder="Search stylists…"
-        searchText={(s) => `${s.name} ${s.role} ${(s.tags ?? []).join(' ')}`}
-        chips={chips}
-        emptyLabel="No stylists match your filters."
-        render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
-      />
-    </>
+    <div className="acrud">
+      <div className="acrud__list">
+        <ListToolbar
+          items={stylists}
+          placeholder="Search stylists…"
+          searchText={(s) => `${s.name} ${s.role} ${(s.tags ?? []).join(' ')}`}
+          chips={chips}
+          emptyLabel="No stylists match your filters."
+          render={(rows) => <ul className="alist">{rows.map((s) => <EditRow key={s.id} s={s} />)}</ul>}
+        />
+      </div>
+      <div className="acrud__form">
+        <CreateForm />
+      </div>
+    </div>
   );
 }

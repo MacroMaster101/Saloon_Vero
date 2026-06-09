@@ -16,7 +16,7 @@ export default async function ContentPage() {
     getBusinessHours(),
   ]);
   return (
-    <div>
+    <div className="apage">
       <div className="ahead">
         <div>
           <span className="eyebrow">Homepage</span>
@@ -24,13 +24,15 @@ export default async function ContentPage() {
         </div>
         <Link href="/" target="_blank" className="btn btn--ghost">View on site ↗</Link>
       </div>
-      <HeroForm content={hero} />
-      <StatsForm content={stats} />
-      <StoryForm content={story} />
-      <QuoteForm content={quote} />
-      <CtaForm content={cta} />
-      <HoursForm hours={hours} />
-      <ContactForm content={contact} />
+      <div className="acontent-grid">
+        <HeroForm content={hero} />
+        <StatsForm content={stats} />
+        <StoryForm content={story} />
+        <QuoteForm content={quote} />
+        <CtaForm content={cta} />
+        <HoursForm hours={hours} />
+        <ContactForm content={contact} />
+      </div>
     </div>
   );
 }

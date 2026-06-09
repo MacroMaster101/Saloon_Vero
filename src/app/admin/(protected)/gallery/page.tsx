@@ -8,7 +8,7 @@ export default async function GalleryPage() {
   const sb = await createClient();
   const { data: items } = await sb.from('gallery').select('*').order('sort_order');
   return (
-    <div>
+    <div className="apage">
       <div className="ahead">
         <div>
           <span className="eyebrow">Lookbook</span>

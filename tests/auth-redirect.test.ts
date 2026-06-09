@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { safeNext } from '@/lib/auth/redirect';
-import { roleDefaultPath } from '@/lib/auth/roles';
+import { defaultLandingPath } from '@/lib/auth/roles';
 
 describe('safeNext', () => {
   it('accepts a same-origin relative path', () => {
@@ -20,12 +20,9 @@ describe('safeNext', () => {
   });
 });
 
-describe('roleDefaultPath', () => {
-  it('routes admin and staff to /admin', () => {
-    expect(roleDefaultPath('admin')).toBe('/admin');
-    expect(roleDefaultPath('staff')).toBe('/admin');
-  });
-  it('routes user to /', () => {
-    expect(roleDefaultPath('user')).toBe('/');
+describe('defaultLandingPath', () => {
+  it('sends everyone to the home page after login', () => {
+    // staff/admin reach their dashboard via the avatar dropdown, not on login
+    expect(defaultLandingPath()).toBe('/');
   });
 });

@@ -45,19 +45,27 @@ function EditRow({ g }: { g: GalleryItem }) {
         <span className="arow__name">{g.title}</span>
         <span className="arow__meta">{g.tag}{g.is_active ? '' : ' · hidden'}</span>
       </div>
-      <details className="arow__edit">
-        <summary />
-        <form action={action} style={{ marginTop: 12 }}>
+      <div className="arow__actions">
+        <details className="arow__edit">
+          <summary />
+          <form action={action}>
+            <input type="hidden" name="id" value={g.id} />
+            <GalleryFields g={g} />
+            <FormStatus state={state} />
+            <div className="aform__foot">
+              <SubmitButton pending={pending} />
+              <button type="button" className="btn btn--ghost"
+                onClick={(e) => e.currentTarget.closest('details')?.removeAttribute('open')}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </details>
+        <form action={deleteGalleryItem}>
           <input type="hidden" name="id" value={g.id} />
-          <GalleryFields g={g} />
-          <FormStatus state={state} />
-          <SubmitButton pending={pending} />
+          <button type="submit" className="btn btn--danger-outline">Delete</button>
         </form>
-      </details>
-      <form action={deleteGalleryItem} style={{ marginTop: 8 }}>
-        <input type="hidden" name="id" value={g.id} />
-        <button type="submit" className="btn btn--danger-outline">Delete</button>
-      </form>
+      </div>
     </li>
   );
 }
@@ -69,16 +77,20 @@ export function GalleryList({ items }: { items: GalleryItem[] }) {
     { id: 'hidden', label: 'Hidden', match: (g) => !g.is_active },
   ];
   return (
-    <>
-      <CreateForm />
-      <ListToolbar
-        items={items}
-        placeholder="Search gallery…"
-        searchText={(g) => `${g.title} ${g.tag} ${g.category}`}
-        chips={chips}
-        emptyLabel="No gallery items match your filters."
-        render={(rows) => <ul className="alist">{rows.map((g) => <EditRow key={g.id} g={g} />)}</ul>}
-      />
-    </>
+    <div className="acrud">
+      <div className="acrud__list">
+        <ListToolbar
+          items={items}
+          placeholder="Search gallery…"
+          searchText={(g) => `${g.title} ${g.tag} ${g.category}`}
+          chips={chips}
+          emptyLabel="No gallery items match your filters."
+          render={(rows) => <ul className="alist">{rows.map((g) => <EditRow key={g.id} g={g} />)}</ul>}
+        />
+      </div>
+      <div className="acrud__form">
+        <CreateForm />
+      </div>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { getStylists } from '@/lib/queries';
 import type { BlockedSlot } from '@/lib/supabase/types';
@@ -30,10 +31,10 @@ export default async function BlockedSlotsPage() {
   const rows = (data ?? []) as unknown as Row[];
 
   return (
-    <div>
+    <div className="apage">
       <div className="ahead">
         <h1 className="ahead__title">Blocked slots</h1>
-        <a href="/admin" className="btn btn--ghost">Back to dashboard</a>
+        <Link href="/admin" className="btn btn--ghost">Back to dashboard</Link>
       </div>
       <p className="lead" style={{ marginTop: 12 }}>
         Block off time for a stylist or the whole salon. Booking availability hides these times.
@@ -58,7 +59,7 @@ export default async function BlockedSlotsPage() {
                 </div>
                 <form action={deleteBlock}>
                   <input type="hidden" name="id" value={b.id} />
-                  <button className="btn btn--ghost">Remove</button>
+                  <button type="submit" className="btn btn--danger-outline">Remove</button>
                 </form>
               </li>
             ))}

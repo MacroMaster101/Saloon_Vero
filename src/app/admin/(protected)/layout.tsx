@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { requireRole } from '@/lib/supabase/auth';
 import { signOut } from '../actions';
 import { Icon, type IconName } from '@/components/ui/icon';
@@ -14,8 +16,8 @@ const ADMIN_NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin/schedule', label: 'Schedule', icon: 'calendar' },
 ];
 const STAFF_NAV: { href: string; label: string; icon: IconName }[] = [
-  { href: '/admin/schedule', label: 'My schedule', icon: 'calendar' },
   { href: '/admin', label: 'Dashboard', icon: 'grid' },
+  { href: '/admin/schedule', label: 'My schedule', icon: 'calendar' },
 ];
 
 // Mobile bottom-nav split: up to 5 primary tabs in the bar, the rest go to "More".
@@ -42,7 +44,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
   return (
     <div className="shell shell--admin">
       <aside className="shell__side">
-        <a href="/" className="side__back"><Icon name="arrowLeft" className="ic" /> Back to site</a>
+        <Link href="/" className="side__back"><Icon name="arrowLeft" className="ic" /> Back to site</Link>
         <div className="side__brand"><span className="pole" style={{ height: 26 }} /> Vero Salon
           <span className="role-badge" style={{ marginLeft: 'auto' }}>{profile.role === 'admin' ? 'Admin' : 'Staff'}</span>
         </div>
@@ -53,6 +55,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
         <NavLinks items={nav} />
         <div className="side__foot">
           <form action={signOut}><button className="btn btn--ghost" type="submit"><Icon name="logout" className="ic" /> Sign out</button></form>
+          <ThemeToggle />
         </div>
       </aside>
       <main className="shell__main">{children}</main>

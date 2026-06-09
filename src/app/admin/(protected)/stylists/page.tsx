@@ -8,7 +8,7 @@ export default async function StylistsPage() {
   const sb = await createClient();
   const { data: stylists } = await sb.from('stylists').select('*').order('sort_order');
   return (
-    <div>
+    <div className="apage">
       <div className="ahead">
         <div>
           <span className="eyebrow">Team</span>
