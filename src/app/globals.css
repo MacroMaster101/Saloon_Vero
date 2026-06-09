@@ -728,11 +728,11 @@ html.loader-done .loader-overlay { display:none !important; }
 .acrud { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(280px,.9fr); gap:22px; align-items:start; }
 .acrud__list { min-width:0; }
 .acrud__form { min-width:0; }
-.acrud__form .acard { position:sticky; top:20px; margin:0; }
+.acrud__form .acard { position:sticky; top:20px; margin:0; max-width:none; }
 
 /* ── Content page: section forms in a 2-up grid ────────────────── */
 .acontent-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
-.acontent-grid .acard { margin:0; }
+.acontent-grid .acard { margin:0; max-width:none; }
 
 .btn--danger-outline { background:transparent; color:var(--error); border-color:var(--error); }
 .btn--danger-outline:hover { background:color-mix(in srgb, var(--error) 8%, transparent); }
