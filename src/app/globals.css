@@ -645,7 +645,8 @@ html.loader-done .loader-overlay { display:none !important; }
 /* a page can opt its root into filling the full main area */
 .apage { flex:1 1 auto; display:flex; flex-direction:column; }
 /* empty-state that grows to centre itself in the remaining space */
-.aempty { flex:1 1 auto; display:grid; place-items:center; min-height:240px; color:var(--fg-2); }
+.aempty { flex:1 1 auto; display:grid; place-items:center; min-height:280px; }
+.aempty .lead { color:var(--fg-muted); font-size:15px; }
 .side__back { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--fg-muted); padding:6px 4px; margin-bottom:18px; }
 .side__back:hover { color:var(--accent-dark); }
 .side__id { display:flex; align-items:center; gap:12px; padding:0 4px 18px; border-bottom:1px solid var(--line); margin-bottom:8px; }
@@ -738,18 +739,18 @@ html.loader-done .loader-overlay { display:none !important; }
 /* ===== ADMIN (redesign — direction B) ===== */
 /* Page header */
 .ahead { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
-.ahead__title { font-size:30px; font-weight:700; letter-spacing:-.025em; color:var(--fg); margin:6px 0 0; }
+.ahead__title { font-size:32px; font-weight:800; letter-spacing:-.03em; color:var(--fg); margin:6px 0 0; }
 
 /* Dashboard stat tiles */
 .adash__tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:18px 0 30px; }
-.atile { background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent);
-  border-radius:var(--radius-sm); padding:15px 16px; box-shadow:var(--shadow-card);
+.atile { background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--accent);
+  border-radius:var(--radius-md); padding:18px 18px 16px; box-shadow:0 6px 18px -10px rgba(120,75,20,.22);
   transition:transform .15s var(--ease), box-shadow .2s var(--ease); }
-.atile:hover { transform:translateY(-3px); }
-.atile__k { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-muted); margin-bottom:8px; }
-.atile__n { font-size:30px; font-weight:800; color:var(--fg); letter-spacing:-.03em; line-height:1; }
-.atile__n em { color:var(--accent); font-style:normal; }
-.atile__sub { font-size:11px; color:var(--fg-2); margin-top:5px; }
+.atile:hover { transform:translateY(-3px); box-shadow:0 12px 26px -12px rgba(120,75,20,.30); }
+.atile__k { font-size:10.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-muted); margin-bottom:10px; }
+.atile__n { font-size:34px; font-weight:800; color:var(--fg); letter-spacing:-.03em; line-height:1; }
+.atile__n em { color:var(--accent-text); font-style:normal; }
+.atile__sub { font-size:11.5px; color:var(--fg-2); margin-top:6px; }
 @media (max-width:780px){ .adash__tiles { grid-template-columns:1fr 1fr; } }
 
 /* Hours editor row */
