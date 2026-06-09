@@ -23,8 +23,8 @@ export default async function AccountPage() {
   const memberSince = user?.created_at ? dateFmt.format(new Date(user.created_at)) : '—';
   const lastSignIn = user?.last_sign_in_at ? stampFmt.format(new Date(user.last_sign_in_at)) : '—';
   const initial = (profile.fullName || profile.email || '?').trim().charAt(0).toUpperCase();
-  const uploaded = (user?.user_metadata?.avatar_url as string | undefined) ?? null;
-  const avatarUrl = avatarSrc(uploaded, profile.email ?? profile.fullName); // photo or DiceBear fallback
+  const userMetadata = user?.user_metadata ?? null;
+  const avatarUrl = avatarSrc(userMetadata, profile.email ?? profile.fullName); // photo or DiceBear fallback
 
   const bookingsView = bookings.length === 0 ? (
     <p className="step__hint">No bookings yet.</p>
@@ -44,7 +44,15 @@ export default async function AccountPage() {
     <AccountTabs
       name={profile.fullName ?? ''} role={profile.role} initial={initial}
       memberSince={memberSince} lastSignIn={lastSignIn} avatarUrl={avatarUrl}
-      profile={<ProfileForm fullName={profile.fullName ?? ''} email={profile.email ?? ''} role={profile.role} />}
+      profile={
+        <ProfileForm
+          fullName={profile.fullName ?? ''}
+          email={profile.email ?? ''}
+          role={profile.role}
+          userMetadata={userMetadata}
+          seed={profile.email ?? profile.fullName ?? 'guest'}
+        />
+      }
       bookings={bookingsView}
       settings={<DeleteAccount />}
     />
