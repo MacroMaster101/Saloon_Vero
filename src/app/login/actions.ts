@@ -3,8 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { safeNext } from '@/lib/auth/redirect';
 import { env } from '@/lib/env';
-import { getProfile } from '@/lib/supabase/auth';
-import { roleDefaultPath } from '@/lib/auth/roles';
+import { defaultLandingPath } from '@/lib/auth/roles';
 
 export async function signInWithGoogle(formData: FormData): Promise<void> {
   const next = safeNext(String(formData.get('next') ?? '')) ?? '';
@@ -23,6 +22,5 @@ export async function signInWithPassword(_prev: unknown, formData: FormData): Pr
   const { error } = await sb.auth.signInWithPassword({ email, password });
   if (error) return { error: error.message };
   if (explicitNext) redirect(explicitNext);
-  const profile = await getProfile();
-  redirect(roleDefaultPath(profile?.role ?? 'user'));
+  redirect(defaultLandingPath());
 }
