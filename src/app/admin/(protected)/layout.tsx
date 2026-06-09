@@ -16,8 +16,8 @@ const ADMIN_NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin/schedule', label: 'Schedule', icon: 'calendar' },
 ];
 const STAFF_NAV: { href: string; label: string; icon: IconName }[] = [
-  { href: '/admin/schedule', label: 'My schedule', icon: 'calendar' },
   { href: '/admin', label: 'Dashboard', icon: 'grid' },
+  { href: '/admin/schedule', label: 'My schedule', icon: 'calendar' },
 ];
 
 // Mobile bottom-nav split: up to 5 primary tabs in the bar, the rest go to "More".
