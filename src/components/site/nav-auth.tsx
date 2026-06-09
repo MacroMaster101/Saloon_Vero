@@ -2,20 +2,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { signOut } from '@/app/admin/actions';
 import type { Profile } from '@/lib/supabase/auth';
+import { avatarSrc } from '@/lib/avatar';
+import { ProfileModal } from '@/components/site/profile-modal';
 
-export function NavAuth({ profile }: { profile: Profile | null }) {
+export function NavAuth({ profile, avatarUrl }: { profile: Profile | null; avatarUrl?: string | null }) {
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // close on outside click or Escape
   useEffect(() => {
     if (!open) return;
     function onDown(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpen(false);
-    }
+    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') setOpen(false); }
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
     return () => {
@@ -28,8 +28,8 @@ export function NavAuth({ profile }: { profile: Profile | null }) {
 
   const dash = profile.role === 'admin' ? '/admin' : profile.role === 'staff' ? '/admin/schedule' : '/account';
   const dashLabel = profile.role === 'user' ? 'Account' : profile.role === 'staff' ? 'My schedule' : 'Admin';
-  const name = profile.fullName ?? profile.email ?? 'Account';
-  const initial = name.trim().charAt(0).toUpperCase() || '?';
+  const seed = profile.email ?? profile.fullName ?? 'guest';
+  const src = avatarSrc(avatarUrl, seed);
 
   return (
     <div className={`nav-profile${open ? ' open' : ''}`} ref={ref}>
@@ -41,17 +41,23 @@ export function NavAuth({ profile }: { profile: Profile | null }) {
         aria-label="Account menu"
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="avatar avatar--sm"><b>{initial}</b></span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt="" className="nav-profile__avatar" />
       </button>
 
       <div className="nav-profile__menu" role="menu" hidden={!open}>
         <div className="nav-profile__head">
-          <span className="avatar avatar--sm"><b>{initial}</b></span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="" className="nav-profile__avatar" />
           <div className="nav-profile__id">
             <b>{profile.fullName ?? 'Account'}</b>
             {profile.email && <span>{profile.email}</span>}
           </div>
         </div>
+        <button type="button" role="menuitem" className="nav-profile__item"
+          onClick={() => { setOpen(false); setEditing(true); }}>
+          Edit profile
+        </button>
         <a href={dash} role="menuitem" className="nav-profile__item" onClick={() => setOpen(false)}>
           {dashLabel}
         </a>
@@ -61,6 +67,15 @@ export function NavAuth({ profile }: { profile: Profile | null }) {
           </button>
         </form>
       </div>
+
+      <ProfileModal
+        open={editing}
+        onClose={() => setEditing(false)}
+        seed={seed}
+        initialName={profile.fullName ?? ''}
+        initialAvatar={avatarUrl ?? null}
+        email={profile.email}
+      />
     </div>
   );
 }

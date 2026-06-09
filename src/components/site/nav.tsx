@@ -1,9 +1,13 @@
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { NavAuth } from '@/components/site/nav-auth';
 import { getProfile } from '@/lib/supabase/auth';
+import { createClient } from '@/lib/supabase/server';
 
 export async function Nav() {
   const profile = await getProfile();
+  const sb = await createClient();
+  const { data: { user } } = await sb.auth.getUser();
+  const avatarUrl = (user?.user_metadata?.avatar_url as string | null | undefined) ?? null;
   return (
     <header className="nav" id="nav">
       <div className="wrap nav__inner">
@@ -21,7 +25,7 @@ export async function Nav() {
           <a href="#visit">Find Us</a>
         </nav>
         <ThemeToggle />
-        <NavAuth profile={profile} />
+        <NavAuth profile={profile} avatarUrl={avatarUrl} />
         {/* "Book now" is for customers — staff/admin manage bookings elsewhere */}
         {profile?.role !== 'admin' && profile?.role !== 'staff' && (
           <a href="#book" className="btn btn--primary nav__cta nav__cta--book">Book now</a>

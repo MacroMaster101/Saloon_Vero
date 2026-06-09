@@ -5,6 +5,7 @@ import { ProfileForm } from './profile-form';
 import { DeleteAccount } from './delete-account';
 import { AccountTabs } from './account-tabs';
 import { Icon } from '@/components/ui/icon';
+import { avatarSrc } from '@/lib/avatar';
 
 const TZ = 'Asia/Colombo';
 const dateFmt = new Intl.DateTimeFormat('en-LK', { timeZone: TZ, month: 'short', year: 'numeric' });
@@ -22,7 +23,8 @@ export default async function AccountPage() {
   const memberSince = user?.created_at ? dateFmt.format(new Date(user.created_at)) : '—';
   const lastSignIn = user?.last_sign_in_at ? stampFmt.format(new Date(user.last_sign_in_at)) : '—';
   const initial = (profile.fullName || profile.email || '?').trim().charAt(0).toUpperCase();
-  const avatarUrl = (user?.user_metadata?.avatar_url as string | undefined) ?? null;
+  const uploaded = (user?.user_metadata?.avatar_url as string | undefined) ?? null;
+  const avatarUrl = avatarSrc(uploaded, profile.email ?? profile.fullName); // photo or DiceBear fallback
 
   const bookingsView = bookings.length === 0 ? (
     <p className="step__hint">No bookings yet.</p>
