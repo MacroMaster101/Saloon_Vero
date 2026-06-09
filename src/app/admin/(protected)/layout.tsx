@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { requireRole } from '@/lib/supabase/auth';
 import { signOut } from '../actions';
 import { Icon, type IconName } from '@/components/ui/icon';
@@ -54,6 +55,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
         <NavLinks items={nav} />
         <div className="side__foot">
           <form action={signOut}><button className="btn btn--ghost" type="submit"><Icon name="logout" className="ic" /> Sign out</button></form>
+          <ThemeToggle />
         </div>
       </aside>
       <main className="shell__main">{children}</main>

@@ -649,13 +649,14 @@ html.loader-done .loader-overlay { display:none !important; }
 .aempty .lead { color:var(--fg-muted); font-size:15px; }
 .side__back { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--fg-muted); padding:6px 4px; margin-bottom:18px; }
 .side__back:hover { color:var(--accent-dark); }
-.side__id { display:flex; align-items:center; gap:12px; padding:0 4px 18px; border-bottom:1px solid var(--line); margin-bottom:8px; }
+.side__id { display:flex; align-items:center; gap:12px; padding:0 4px 18px; border-bottom:1px solid var(--line); margin-bottom:8px; min-width:0; }
 .side__brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px; color:var(--fg); padding:2px 4px 16px; border-bottom:1px solid var(--line); margin-bottom:6px; }
 .avatar { width:46px; height:46px; border-radius:50%; flex:none; position:relative; overflow:hidden;
   background:conic-gradient(from 210deg,var(--accent),var(--accent-dark),var(--accent-tint),var(--accent)); }
 .avatar b { position:absolute; inset:0; display:grid; place-items:center; font-weight:700; color:#fff; font-size:18px; }
 .avatar img { width:100%; height:100%; object-fit:cover; }
-.side__name { font-weight:700; font-size:14.5px; color:var(--fg); line-height:1.2; }
+.side__name { font-weight:700; font-size:14.5px; color:var(--fg); line-height:1.2;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; max-width:100%; }
 .role-badge { font-size:9.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--accent-text);
   font-weight:700; background:var(--accent-tint); padding:3px 8px; border-radius:var(--radius-pill); }
 .side__meta { padding:12px 4px 16px; border-bottom:1px solid var(--line); margin-bottom:12px; display:grid; gap:9px; }
@@ -665,7 +666,8 @@ html.loader-done .loader-overlay { display:none !important; }
 .side__nav a { display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:11px; font-size:14px; font-weight:600; color:var(--fg-2); cursor:pointer; }
 .side__nav a:hover { background:color-mix(in srgb, var(--accent) 8%, transparent); color:var(--fg); }
 .side__nav a.on { background:var(--accent-tint); color:var(--accent-text); }
-.side__foot { margin-top:auto; padding-top:14px; }
+.side__foot { margin-top:auto; padding-top:14px; display:flex; align-items:center; gap:10px; }
+.side__foot form { flex:1; min-width:0; }
 .side__foot .btn { width:100%; }
 
 /* ── List toolbar (search + chips) ── */
