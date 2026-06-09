@@ -2,10 +2,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { signOut } from '@/app/admin/actions';
 import type { Profile } from '@/lib/supabase/auth';
-import { avatarSrc } from '@/lib/avatar';
+import { avatarSrc, type UserMetadata } from '@/lib/avatar';
 import { ProfileModal } from '@/components/site/profile-modal';
 
-export function NavAuth({ profile, avatarUrl }: { profile: Profile | null; avatarUrl?: string | null }) {
+export function NavAuth({ profile, userMetadata }: { profile: Profile | null; userMetadata?: UserMetadata | null }) {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -29,7 +29,7 @@ export function NavAuth({ profile, avatarUrl }: { profile: Profile | null; avata
   const dash = profile.role === 'admin' ? '/admin' : profile.role === 'staff' ? '/admin/schedule' : '/account';
   const dashLabel = profile.role === 'user' ? 'Account' : profile.role === 'staff' ? 'My schedule' : 'Admin';
   const seed = profile.email ?? profile.fullName ?? 'guest';
-  const src = avatarSrc(avatarUrl, seed);
+  const src = avatarSrc(userMetadata, seed);
 
   return (
     <div className={`nav-profile${open ? ' open' : ''}`} ref={ref}>
@@ -73,7 +73,7 @@ export function NavAuth({ profile, avatarUrl }: { profile: Profile | null; avata
         onClose={() => setEditing(false)}
         seed={seed}
         initialName={profile.fullName ?? ''}
-        initialAvatar={avatarUrl ?? null}
+        userMetadata={userMetadata}
         email={profile.email}
       />
     </div>

@@ -39,8 +39,13 @@ export async function uploadAvatar(formData: FormData): Promise<Result> {
   // cache-bust so the new image shows immediately after replacing an old one
   const url = `${data.publicUrl}?v=${Date.now()}`;
 
-  const { error: metaErr } = await admin.auth.admin.updateUserById(user.id, {
-    user_metadata: { avatar_url: url },
+  const sb = await createClient();
+  const { error: metaErr } = await sb.auth.updateUser({
+    data: {
+      avatar_url: url,
+      custom_avatar_url: url,
+      avatar_choice: 'custom'
+    },
   });
   if (metaErr) return { error: metaErr.message };
 
@@ -53,14 +58,45 @@ export async function uploadAvatar(formData: FormData): Promise<Result> {
 export async function removeAvatar(): Promise<Result> {
   const user = await getUser();
   if (!user) return { error: 'Not signed in.' };
-  const admin = createAdminClient();
-  const { error } = await admin.auth.admin.updateUserById(user.id, {
-    user_metadata: { avatar_url: null },
+  const sb = await createClient();
+  const { error } = await sb.auth.updateUser({
+    data: {
+      custom_avatar_url: null,
+      avatar_choice: 'dicebear',
+      avatar_url: null
+    },
   });
   if (error) return { error: error.message };
   revalidatePath('/account');
   revalidatePath('/', 'layout');
   return { url: '' };
+}
+
+/** Switch the user's active avatar choice. */
+export async function updateAvatarChoice(choice: 'custom' | 'dicebear' | 'email'): Promise<Result> {
+  const user = await getUser();
+  if (!user) return { error: 'Not signed in.' };
+  const sb = await createClient();
+  
+  const meta = user.user_metadata || {};
+  let avatarUrl: string | null = null;
+  if (choice === 'custom') {
+    avatarUrl = meta.custom_avatar_url || meta.avatar_url;
+  } else if (choice === 'email') {
+    avatarUrl = meta.picture || meta.email_avatar_url;
+  }
+
+  const { error } = await sb.auth.updateUser({
+    data: {
+      avatar_choice: choice,
+      avatar_url: avatarUrl
+    },
+  });
+  if (error) return { error: error.message };
+
+  revalidatePath('/account');
+  revalidatePath('/', 'layout');
+  return { url: avatarUrl || '' };
 }
 
 /** Update the user's display name (kept here so the modal needs one import). */
