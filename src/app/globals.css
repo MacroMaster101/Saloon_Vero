@@ -123,6 +123,34 @@ body, .nav, .barber, .info-card, .book__card, .book__main,
 .nav__links a:hover { color:var(--fg); }
 .nav__links a:hover::after { right:0; }
 .nav__auth { display:inline-flex; gap:14px; align-items:center; }
+
+/* ── Profile dropdown (logged-in header) ──────────────────── */
+.nav-profile { position:relative; display:inline-flex; }
+.nav-profile__btn { background:none; border:0; padding:2px; border-radius:50%; cursor:pointer; line-height:0;
+  transition:transform .15s var(--ease), box-shadow .2s var(--ease); }
+.nav-profile__btn:hover { transform:scale(1.05); }
+.nav-profile__btn:focus-visible { outline:none; box-shadow:0 0 0 3px var(--accent-tint); }
+.avatar--sm { width:38px; height:38px; }
+.avatar--sm b { font-size:15px; }
+.nav-profile__menu { position:absolute; top:calc(100% + 10px); right:0; min-width:220px; z-index:80;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+  box-shadow:0 18px 44px -18px rgba(46,37,25,.35); padding:8px; display:grid; gap:2px;
+  transform-origin:top right; animation:nav-pop .14s var(--ease); }
+@keyframes nav-pop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+.nav-profile__head { display:flex; align-items:center; gap:10px; padding:8px 10px 10px;
+  border-bottom:1px solid var(--line); margin-bottom:6px; }
+.nav-profile__id { min-width:0; }
+.nav-profile__id b { display:block; font-size:14px; color:var(--fg); line-height:1.2;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
+.nav-profile__id span { display:block; font-size:11.5px; color:var(--fg-muted);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
+.nav-profile__item { display:block; width:100%; text-align:left; box-sizing:border-box;
+  font-family:inherit; font-size:13.5px; font-weight:600; color:var(--fg); background:none; border:0;
+  padding:9px 10px; border-radius:var(--radius-sm); cursor:pointer; transition:background .15s var(--ease), color .15s var(--ease); }
+.nav-profile__item:hover { background:var(--bg-2); color:var(--accent-dark); }
+.nav-profile__item--danger { color:var(--error); }
+.nav-profile__item--danger:hover { background:color-mix(in srgb, var(--error) 10%, transparent); color:var(--error); }
+.nav-profile__menu form { margin:0; }
 .nav__burger { display:none; background:none; border:0; cursor:pointer; padding:8px; margin-left:auto; }
 .nav__burger span { display:block; width:24px; height:2px; background:var(--fg); margin:5px 0; border-radius:2px; }
 .pole { width:8px; border-radius:var(--radius-pill);
@@ -1050,10 +1078,8 @@ html.loader-done .loader-overlay { display:none !important; }
   .nav__inner { gap:12px; height:64px; }
   .brand__name { font-size:17px; }
   /* push auth right — the theme toggle that used to do this is now hidden.
-     Covers both states: logged-in (.nav__auth) and logged-out (Sign in = .nav__cta) */
-  .nav__auth, .nav .nav__cta { margin-left:auto; }
-  .nav__auth { gap:8px; }
-  .nav__auth .btn { padding:8px 12px; font-size:13px; }
+     Covers logged-in (.nav-profile) and logged-out (Sign in = .nav__cta) */
+  .nav-profile, .nav .nav__cta { margin-left:auto; }
   /* theme toggle lives in the More sheet on mobile, not the header */
   .nav .theme-toggle { display:none; }
 }
