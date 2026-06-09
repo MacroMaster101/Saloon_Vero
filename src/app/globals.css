@@ -858,7 +858,10 @@ html.loader-done .loader-overlay { display:none !important; }
 .arow__edit summary:hover { border-color:var(--accent); color:var(--accent-dark); }
 .arow__edit summary::-webkit-details-marker { display:none; }
 .arow__edit summary::before { content:"✎ Edit"; }
-.arow__edit[open] summary::before { content:"× Close"; }
+/* when open, the summary is just a state label — Save/Cancel in the footer
+   handle the actions, so it must not look like a second "Cancel/Close". */
+.arow__edit[open] summary::before { content:"Editing"; }
+.arow__edit[open] summary { color:var(--accent-text); border-color:var(--accent); background:var(--accent-tint); cursor:default; }
 /* the edit form drops full-width below the action row when open */
 .arow__edit[open] { flex:1 1 100%; order:3; }
 .arow__edit > form { margin-top:14px; }
