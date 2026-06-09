@@ -9,8 +9,12 @@ export default async function PeoplePage() {
   const { data: stylists } = await sb.from('stylists').select('id, name').order('sort_order');
   return (
     <div className="apage">
-      <span className="eyebrow">Team &amp; access</span>
-      <h1 className="h-section" style={{ fontSize: 30, margin: '8px 0 22px' }}>People</h1>
+      <div className="ahead">
+        <div>
+          <span className="eyebrow">Team &amp; access</span>
+          <h1 className="ahead__title">People</h1>
+        </div>
+      </div>
       <PeopleList people={profiles ?? []} stylists={stylists ?? []} />
     </div>
   );
