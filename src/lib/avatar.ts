@@ -43,8 +43,14 @@ export function getAvatarInfo(userMetadata: UserMetadata | null | undefined, see
     emailAvatar = currentAvatarUrl;
   }
 
-  // Determine user's active choice
+  // Determine user's active choice with safety fallbacks
   let choice = meta.avatar_choice;
+  if (choice === 'email' && !emailAvatar) {
+    choice = 'dicebear';
+  }
+  if (choice === 'custom' && !customAvatar) {
+    choice = 'dicebear';
+  }
   if (!choice) {
     if (customAvatar) {
       choice = 'custom';
