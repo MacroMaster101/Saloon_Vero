@@ -675,7 +675,8 @@ html.loader-done .loader-overlay { display:none !important; }
 .search { position:relative; flex:1; min-width:220px; }
 .search .ic { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--fg-muted); }
 .search input { width:100%; font-size:14px; color:var(--fg); background:var(--surface);
-  border:1.5px solid var(--line); border-radius:var(--radius-pill); padding:11px 14px 11px 38px; }
+  border:1.5px solid var(--line); border-radius:var(--radius-pill); padding:10px 14px 10px 36px;
+  transition:border-color .15s var(--ease); }
 .search input:focus { outline:none; border-color:var(--accent); }
 .chips { display:flex; gap:7px; flex-wrap:wrap; }
 .chip { font-size:12px; font-weight:700; padding:8px 14px; border-radius:var(--radius-pill);
@@ -772,8 +773,8 @@ html.loader-done .loader-overlay { display:none !important; }
 .afield { display:grid; gap:5px; margin-bottom:14px; }
 .alabel { font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--fg-muted); }
 .ainput, .atextarea { width:100%; box-sizing:border-box; padding:11px 13px; border:1.5px solid var(--line);
-  border-radius:var(--radius-sm); background:var(--bg-2); color:var(--fg); font-family:inherit; font-size:14px;
-  transition:border-color .2s, box-shadow .2s, background .2s; }
+  border-radius:var(--radius-sm); font-size:14px; color:var(--fg); background:var(--surface);
+  transition:border-color .15s var(--ease), box-shadow .15s var(--ease); }
 .atextarea { resize:vertical; }
 .ainput:focus, .atextarea:focus { outline:none; border-color:var(--accent); background:var(--surface);
   box-shadow:0 0 0 3px var(--accent-tint); }
@@ -803,7 +804,9 @@ html.loader-done .loader-overlay { display:none !important; }
 
 /* List rows */
 .alist { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
-.arow { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px 16px; }
+.arow { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:16px 18px; transition:border-color .15s var(--ease), box-shadow .2s var(--ease); }
+.arow:hover { border-color:color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow:0 6px 16px -12px rgba(120,75,20,.25); }
 .arow__head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .arow__name { font-size:14px; font-weight:700; color:var(--fg); }
 .arow__meta { font-size:12px; color:var(--fg-muted); }
