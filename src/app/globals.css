@@ -719,6 +719,21 @@ html.loader-done .loader-overlay { display:none !important; }
 .person select { font-family:inherit; font-size:13px; color:var(--fg); background:var(--bg-2);
   border:1.5px solid transparent; border-radius:10px; padding:8px 10px; cursor:pointer; }
 .person select:focus { outline:none; border-color:var(--accent); }
+/* desktop: identity grows, controls hug the right edge */
+.person__id { display:flex; align-items:center; gap:12px; min-width:0; flex:1; }
+.person__edit { display:flex; align-items:center; gap:8px; margin-left:auto; }
+.person__del { margin-left:4px; }
+
+/* ── Space-filling CRUD layout: list (left) + add-form (right) ──── */
+.acrud { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(280px,.9fr); gap:22px; align-items:start; }
+.acrud__list { min-width:0; }
+.acrud__form { min-width:0; }
+.acrud__form .acard { position:sticky; top:20px; margin:0; }
+
+/* ── Content page: section forms in a 2-up grid ────────────────── */
+.acontent-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+.acontent-grid .acard { margin:0; }
+
 .btn--danger-outline { background:transparent; color:var(--error); border-color:var(--error); }
 .btn--danger-outline:hover { background:color-mix(in srgb, var(--error) 8%, transparent); }
 
@@ -1177,6 +1192,11 @@ html, body { overflow-x:hidden; }
   .arow--split { display:flex; flex-direction:column; align-items:stretch; gap:12px; }
   .arow--split .arow__main { display:grid; gap:4px; }
   .arow--split .btn { width:100%; }
+
+  /* space-filling layouts collapse to a single column on mobile */
+  .acrud { grid-template-columns:1fr; gap:18px; }
+  .acrud__form .acard { position:static; }
+  .acontent-grid { grid-template-columns:1fr; }
 
   /* People: identity on top, controls stacked & full-width */
   .person { flex-direction:column; align-items:stretch; gap:12px; padding:16px; }
